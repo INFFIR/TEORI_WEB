@@ -3,31 +3,40 @@
 // Fungsi untuk memuat komponen secara dinamis
 async function loadComponent(selector, file) {
     try {
-      const response = await fetch(file);
-      if (!response.ok) throw new Error(`Failed to load ${file}`);
-      const content = await response.text();
-      document.querySelector(selector).insertAdjacentHTML('beforeend', content);
+        const response = await fetch(file);
+        if (!response.ok) throw new Error(`Gagal memuat ${file}`);
+        const content = await response.text();
+        document.querySelector(selector).insertAdjacentHTML('beforeend', content);
     } catch (error) {
-      console.error(error);
+        console.error(error);
     }
-  }
-  
-  // Memuat semua komponen saat DOM telah siap
-  document.addEventListener("DOMContentLoaded", () => {
-    loadComponent("#wrapper", "./components/navbar.html").then(() => {
-      // Setelah navbar dimuat, tambahkan event listener untuk toggle
-      const navbarToggle = document.getElementById('navbar-toggle');
-      navbarToggle.addEventListener('change', () => {
-        document.querySelector('.menu-items').classList.toggle('active', navbarToggle.checked);
-      });
+}
+
+// Memuat semua komponen saat DOM telah siap
+document.addEventListener("DOMContentLoaded", async () => {
+    const components = [
+        "./components/navbar.html",
+        "./components/showcase.html",
+        "./components/about.html",
+        "./components/services.html",
+        "./components/pricing.html",
+        "./components/order.html",
+        "./components/testimonials.html",
+        "./components/contact.html",
+        "./components/footer.html"
+    ];
+
+    for (const file of components) {
+        await loadComponent("#wrapper", file);
+    }
+
+    // Menambahkan event listener untuk menutup menu ketika tautan diklik (mobile)
+    document.addEventListener('click', function(event) {
+        const isMenuLink = event.target.closest('.menu-items a');
+        const navbarToggle = document.getElementById('navbar-toggle');
+
+        if (isMenuLink && navbarToggle.checked) {
+            navbarToggle.checked = false;
+        }
     });
-    
-    loadComponent("#wrapper", "./components/showcase.html");
-    loadComponent("#wrapper", "./components/about.html");
-    loadComponent("#wrapper", "./components/services.html");
-    loadComponent("#wrapper", "./components/pricing.html");
-    loadComponent("#wrapper", "./components/testimonials.html");
-    loadComponent("#wrapper", "./components/contact.html");
-    loadComponent("#wrapper", "./components/footer.html");
-  });
-  
+});
