@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Labrada:wght@300&display=swap');
+
+/* Hide scrollbar but allow scrolling */
+html, body {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
+
+/* Remove margin and padding, set box-sizing */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Set base font-family and font-size */
+body {
+    font-family: 'Labrada', cursive, serif;
+    font-size: 62.5%;
+    scroll-behavior: smooth; /* Menambahkan smooth scrolling */
+}

@@ -12,8 +12,20 @@ async function loadComponent(selector, file) {
     }
 }
 
+// Fungsi untuk memastikan Font Awesome CSS telah dimuat
+function isFontAwesomeLoaded() {
+    return Array.from(document.styleSheets).some(sheet => {
+        return sheet.href && sheet.href.includes('font-awesome');
+    });
+}
+
 // Memuat semua komponen saat DOM telah siap
 document.addEventListener("DOMContentLoaded", async () => {
+    // Memeriksa apakah Font Awesome telah dimuat
+    if (!isFontAwesomeLoaded()) {
+        console.error('Font Awesome CSS tidak terdeteksi. Pastikan link Font Awesome ada di <head>.');
+    }
+
     const components = [
         "./components/navbar.html",
         "./components/showcase.html",
@@ -29,6 +41,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     for (const file of components) {
         await loadComponent("#wrapper", file);
     }
+
+    // Menambahkan event listener untuk smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(event) {
+            event.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
 
     // Menambahkan event listener untuk menutup menu ketika tautan diklik (mobile)
     document.addEventListener('click', function(event) {
