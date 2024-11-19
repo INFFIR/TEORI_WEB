@@ -149,58 +149,6 @@ html {
     transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .hamburger-lines {
-        display: flex;
-    }
-
-    .menu-items {
-        position: absolute;
-        top: 60px;
-        left: 0;
-        right: 0;
-        background-color: #edffff;
-        flex-direction: column;
-        align-items: center;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease-in-out;
-    }
-
-    .menu-items li {
-        margin: 1.5rem 0;
-    }
-
-    #navbar-toggle:checked ~ .menu-items {
-        max-height: 500px; /* Sesuaikan sesuai kebutuhan */
-    }
-
-    /* Adjust Navbar Menu Items for mobile */
-    .menu-items {
-        align-items: center;
-    }
-
-    .menu-items li {
-        margin: 1.5rem 0;
-    }
-
-    /* Adjust Contact Section for mobile */
-    .contact-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .conatact-image, .form-container {
-        width: 100%;
-        margin: 0;
-    }
-
-    .form-container {
-        margin-top: 2rem;
-    }
-}
-
 /* Showcase Area */
 .showcase-area {
     height: 50vh;
@@ -221,6 +169,7 @@ html {
     font-size: 2.8rem;
     font-weight: 550;
     margin-bottom: 1rem;
+    /* Animation moved to animate.css */
 }
 
 .showcase-container input {
@@ -277,55 +226,11 @@ textarea:focus::placeholder {
     transition: transform 4s ease-in-out;
 }
 
-.about-img {
-    transform: translateX(150%);
-    animation: about-img-animation 4s ease-in-out forwards;
-}
-
-@keyframes about-img-animation {
-    100% {
-        transform: translateX(0);
-    }
-}
-
 .about-text, .about-text2 {
     flex: 1 1 400px;
     padding: 30px;
     margin: auto;
     transition: transform 4s ease-in-out;
-}
-
-.about-text {
-    transform: translateX(-150%);
-    animation: about-text-animation 4s ease-in-out forwards;
-}
-
-@keyframes about-text-animation {
-    100% {
-        transform: translateX(0);
-    }
-}
-
-.about-img2 {
-    transform: translateX(-150%);
-    animation: about-img-animation2 4s ease-in-out forwards;
-}
-
-@keyframes about-img-animation2 {
-    100% {
-        transform: translateX(0);
-    }
-}
-
-.about-text2 {
-    transform: translateX(150%);
-    animation: about-text-animation2 4s ease-in-out forwards;
-}
-
-@keyframes about-text-animation2 {
-    100% {
-        transform: translateX(0);
-    }
 }
 
 .about-head {
@@ -350,73 +255,99 @@ textarea:focus::placeholder {
     object-position: left;
 }
 
+.about-img img:hover, .about-img2 img:hover {
+    transform: scale(1);
+}
+
 /* Services Section */
+/* Enhanced styles for precise and balanced layout */
 #services {
     padding: 5rem 0 10rem 0;
+    background-color: #f9f9f9; /* Optional: Add a light background for better contrast */
+}
+
+#services h2 {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 600;
+    margin-bottom: 4rem;
+    color: #1d3b76;
+    position: relative;
+}
+
+#services h2::after {
+    content: '';
+    width: 100px;
+    height: 4px;
+    background-color: #1d3b76;
+    display: block;
+    margin: 1rem auto 0 auto;
+    border-radius: 2px;
 }
 
 .service-container {
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
+    justify-content: space-between;
     gap: 2rem;
 }
 
-.service-container img {
-    display: block;
-    width: 100%;
-    margin: auto;
-    max-height: 300px;
-    object-fit: cover;
-    object-position: center;
-    opacity: 0.84;
+.service-type {
+    flex: 1 1 calc(33.333% - 2rem);
+    max-width: calc(33.333% - 2rem);
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-type:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
 }
 
 .img-container {
-    margin: 0 1rem;
     position: relative;
-    flex: 1 1 300px;
+    width: 100%;
+    padding-top: 75%; /* 4:3 Aspect Ratio */
+    overflow: hidden;
 }
 
-.img-content {
-    position: absolute;
-    top: 70%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    z-index: 2;
-    text-align: center;
-    transition: all 0.3s ease-in-out 0.1s;
-}
-
-.img-content h3 {
-    color: #1d3b76;
-    font-size: 2.4rem;
-}
-
-.img-container::after {
-    content: "";
-    display: block;
+.img-container img {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgb(211, 211, 216);
-    z-index: 1;
-    transform: scaleY(0);
-    transform-origin: 100% 100%;
-    transition: all 0.3s ease-in-out;
+    object-fit: cover;
+    transition: transform 0.3s ease;
 }
 
-.img-container:hover::after {
-    opacity: 1;
-    transform: scaleY(1);
+.service-type:hover .img-container img {
+    transform: scale(1.05);
 }
 
-.img-container:hover .img-content {
+.img-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(29, 59, 118, 0.8);
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.service-type:hover .img-content {
     opacity: 1;
-    top: 40%;
+}
+
+.img-content h3 {
+    font-size: 1.8rem;
+    margin: 0;
 }
 
 /* Pricing Section */
@@ -489,10 +420,6 @@ textarea:focus::placeholder {
     gap: 2rem;
 }
 
-.testimonial-container .checked {
-    color: #ff9529;
-}
-
 .testimonial-box {
     text-align: center;
     padding: 1rem;
@@ -537,7 +464,7 @@ textarea:focus::placeholder {
     gap: 2rem;
 }
 
-.conatact-image { /* Perbaiki typo menjadi .contact-image */
+.contact-image { /* Fixed typo from .conatact-image to .contact-image */
     width: 50%;
 }
 
@@ -671,19 +598,6 @@ textarea:focus::placeholder {
 
 .order-action .btn-primary:hover {
     background-color: #163165;
-}
-
-/* Responsive Styling for Order Section */
-@media (max-width: 768px) {
-    .order-steps {
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-
-    .step {
-        width: 80%;
-        margin: 0 auto;
-    }
 }
 
 /* Fix Font Awesome Icons */
