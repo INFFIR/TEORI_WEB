@@ -216,31 +216,20 @@ document.addEventListener('DOMContentLoaded', () => {
       return times[serviceId] || 24;
     }
   
-    // Handle proceed to notation
-    proceedOrderBtn.addEventListener('click', () => {
-      // Ensure location is entered
-      if (locationInput.value.trim() === '') {
-        alert('Please enter your location.');
-        return;
-      }
-  
-      // Ensure at least one item is selected
-      if (Object.keys(selectedItems).length === 0) {
-        alert('Please select at least one item to order.');
-        return;
-      }
-  
-      // Store order details in localStorage
-      const orderDetails = {
+
+    document.getElementById('proceed-to-notation').addEventListener('click', () => {
+      const transactionData = {
         location: locationInput.value.trim(),
-        services: selectedServices,
-        items: selectedItems,
-        estimatedTime: document.getElementById('summary-time').innerText
+        selectedServices: selectedServices,
+        selectedItems: selectedItems
       };
-      localStorage.setItem('orderDetails', JSON.stringify(orderDetails));
       
-      // Redirect to notation page
-      window.location.href = 'notation.html';
+      // Simpan data ke localStorage
+      localStorage.setItem('transactionData', JSON.stringify(transactionData));
     });
-  });
+      
+
+
+
+});
   
