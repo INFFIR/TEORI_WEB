@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soapy Suds - Transaction</title>
+  
+  <!-- Existing CSS Files -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/media.css">
+  <link rel="stylesheet" href="../../css/animate.css">
+  
+  <!-- Transaction Page Specific CSS -->
+  <link rel="stylesheet" href="css/transaction.css">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" 
+    integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,400&display=swap" 
+    rel="stylesheet">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../../images/favicon.webp">
+</head>
+<body>
+  <!-- Navbar Component -->
+  <nav class="navbar">
+    <div class="navbar-container container">
+      <input type="checkbox" name="navbar-toggle" id="navbar-toggle">
+      <div class="hamburger-lines">
+        <span class="line line1"></span>
+        <span class="line line2"></span>
+        <span class="line line3"></span>
+      </div>
+      <ul class="menu-items">
+        <li><a href="../../index.html#home">Home</a></li>
+        <li><a href="../../index.html#about">About</a></li>
+        <li><a href="../../index.html#services">Services</a></li>
+        <li><a href="../../index.html#pricing">Pricing</a></li>
+        <li><a href="../../index.html#order">Order</a></li>
+        <li><a href="../../index.html#testimonials">Testimonials</a></li>
+        <li><a href="../../index.html#contact">Contact</a></li>
+      </ul>          
+      <a href="../../index.html#home" class="logo"><img src="../../images/logo.png" alt="Soapy Suds"></a>
+    </div>
+  </nav>
+  
+  <!-- Transaction Section -->
+  <section class="transaction-section" id="transaction">
+    <div class="transaction-container container">
+      <!-- Step 1: Select Location -->
+      <div class="step" id="step-location">
+        <h3>Step 1: Select Your Location</h3>
+        <input type="text" id="location-input" placeholder="Enter your location" required>
+      </div>
+
+      <!-- Step 2: Select Services -->
+      <div class="step" id="step-services">
+        <h3>Step 2: Select Services</h3>
+        <div class="services-list">
+          <div class="service-item" data-service="dry-clean">
+            <!-- Ganti fa-dryer dengan fa-washing-machine -->
+            <i class="fa-solid fa-washing-machine fa-2x"></i>
+            <p>Dry Cleaning</p>
+          </div>
+          <div class="service-item" data-service="laundry">
+            <i class="fa-solid fa-tshirt fa-2x"></i>
+            <p>Premium Laundry</p>
+          </div>
+          <div class="service-item" data-service="steam-iron">
+            <i class="fa-solid fa-iron fa-2x"></i>
+            <p>Steam Ironing</p>
+          </div>
+          <div class="service-item" data-service="shoes-clean">
+            <!-- Ganti fa-shoe-prints dengan fa-sneaker -->
+            <i class="fa-solid fa-sneaker fa-2x"></i>
+            <p>Shoes Cleaning</p>
+          </div>
+          <div class="service-item" data-service="bag-clean">
+            <i class="fa-solid fa-shopping-bag fa-2x"></i>
+            <p>Bag Cleaning</p>
+          </div>
+          <div class="service-item" data-service="carpet-clean">
+            <!-- Ganti fa-carpet-bolt dengan fa-rug -->
+            <i class="fa-solid fa-rug fa-2x"></i>
+            <p>Carpet Cleaning</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Select Items -->
+      <div class="step" id="step-items" style="display: none;">
+        <h3>Step 3: Select Items</h3>
+        <div class="items-list" id="items-list">
+          <!-- Dynamic Item Cards Based on Selected Services -->
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="order-summary" id="order-summary" style="display: none;">
+        <h3>Order Summary</h3>
+        <p id="summary-location"></p>
+        <p id="summary-services"></p>
+        <p id="summary-items"></p>
+        <p id="summary-time"></p>
+        <div class="order-actions">
+          <button id="proceed-order" class="btn btn-primary">Proceed to Notation</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Component -->
+  <footer id="footer">
+    <h3>&copy; 2024, INFFIR Company. All rights reserved.</h3>
+  </footer>
+
+  <!-- Existing JavaScript Files -->
+  <script src="../../js/script.js"></script>
+  
+  <!-- Transaction Page Specific JavaScript -->
+  <script src="js/transaction.js"></script>
+</body>
+</html>
