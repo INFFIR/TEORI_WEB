@@ -45,12 +45,39 @@ body {
   color: #0b5ed7;
 }
 
+.invoice-details hr {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 15px 0;
+}
+
 .invoice-details strong {
   color: #333;
 }
 
 .invoice-details span {
   color: #555;
+}
+
+.items-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.items-list li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.items-list li::before {
+  content: '';
+  flex: 1;
+  border-bottom: 1px dotted #ddd;
+  margin: 0 10px;
 }
 
 .btn-back {

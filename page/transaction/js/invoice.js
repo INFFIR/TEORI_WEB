@@ -7,24 +7,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const itemsElement = document.getElementById('invoice-items');
     const totalElement = document.getElementById('invoice-total');
 
-    locationElement.textContent = `Location: ${transactionData.location || 'Not specified'}`;
-    servicesElement.textContent = `Services: ${transactionData.selectedServices.map(service => getServiceName(service)).join(', ')}`;
+    locationElement.textContent = transactionData.location || 'Not specified';
+    servicesElement.textContent = transactionData.selectedServices.map(service => getServiceName(service)).join(', ');
 
-    let itemsHTML = '<ul>';
+    // Populate items list
     let total = 0;
     for (const key in transactionData.selectedItems) {
       const item = transactionData.selectedItems[key];
-      itemsHTML += `<li>${item.name} x ${item.quantity} - Rp${(item.price * item.quantity).toLocaleString()}</li>`;
+      const listItem = document.createElement('li');
+      listItem.innerHTML = `${item.name} x${item.quantity} <span>Rp ${(item.price * item.quantity).toLocaleString()}</span>`;
+      itemsElement.appendChild(listItem);
       total += item.price * item.quantity;
     }
-    itemsHTML += '</ul>';
-    itemsElement.innerHTML = `Items Ordered: ${itemsHTML}`;
-    totalElement.textContent = `Total: Rp${total.toLocaleString()}`;
+    totalElement.textContent = `Rp ${(total).toLocaleString()}`;
   } else {
     document.getElementById('invoice-details').textContent = 'No transaction data found.';
   }
 
-  // Helper function
   function getServiceName(serviceId) {
     const names = {
       'dry-clean': 'Dry Cleaning',
@@ -37,9 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     return names[serviceId] || serviceId;
   }
 
-  // Handle back button
   const backButton = document.getElementById('back-to-transaction');
   backButton.addEventListener('click', () => {
-    window.location.href = './transaction.html'; // Ganti dengan URL yang sesuai
+    window.location.href = './transaction.html';
   });
 });
