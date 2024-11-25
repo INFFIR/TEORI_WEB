@@ -7,16 +7,59 @@
       <span class="line line2"></span>
       <span class="line line3"></span>
     </div>
-    <ul class="menu-items">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#pricing">Pricing</a></li>
-      <li><a href="#order">Order</a></li>
-      <li><a href="#testimonials">Testimonials</a></li>
-      <li><a href="#contact">Contact</a></li>
-      <li><a href="page/admin/admin.html">Admin</a></li> <!-- Updated Admin Link -->
-    </ul>          
+    <ul class="menu-items" id="navbar-links">
+      <li><a href="index.html#home-home" data-id="home">Home</a></li>
+      <li><a href="#about" data-id="about">About</a></li>
+      <li><a href="#services" data-id="services">Services</a></li>
+      <li><a href="#pricing" data-id="pricing">Pricing</a></li>
+      <li><a href="#order" data-id="order">Order</a></li>
+      <li><a href="#testimonials" data-id="testimonials">Testimonials</a></li>
+      <li><a href="#contact" data-id="contact">Contact</a></li>
+      <li><a href="page/admin/admin.html" data-id="admin">Admin</a></li>
+    </ul>
     <a href="#home" class="logo"><img src="images/logo.png" alt="Soapy Suds"></a>
   </div>
 </nav>
+
+<script>
+  (function() {
+    const navbarLinks = document.querySelectorAll('#navbar-links a');
+    const pageId = document.body.id; // ID unik untuk setiap halaman
+
+    // Pemetaan ID body ke bagian tautan spesifik
+    const hrefMappings = {
+      'landing-page': {
+        home: '#home-home',
+        about: './about.html#about',
+        services: './about.html#services',
+        pricing: './about.html#pricing', // Typo diperbaiki
+        order: '#order-home', // Asumsi: 'order.html' adalah halaman Order
+        testimonials: './about.html#testimonials',
+        contact: './about.html#contact',
+      },
+      'transaction-page': {
+        home: '../../about.html#home',
+        about: '../../about.html#about',
+        services: '../../about.html#services',
+        pricing: '../../about.html#pricing',
+        order: '../../about.html#order',
+        testimonials: '../../about.html#testimonials',
+        contact: '../../about.html#contact',
+      },
+      // Mapping untuk halaman lain dapat ditambahkan di sini
+    };
+
+    // Ambil konfigurasi untuk halaman saat ini
+    const currentMappings = hrefMappings[pageId];
+
+    // Update semua link di navbar jika mapping ditemukan
+    if (currentMappings) {
+      navbarLinks.forEach(link => {
+        const sectionId = link.dataset.id; // Ambil data-id pada tiap link
+        if (currentMappings[sectionId]) {
+          link.href = currentMappings[sectionId];
+        }
+      });
+    }
+  })();
+</script>

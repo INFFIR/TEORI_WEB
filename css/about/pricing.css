@@ -1,0 +1,67 @@
+/* pricing.css */
+
+/* Pricing Section */
+#pricing {
+    padding: 50px 0px;
+}
+
+.pricing-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 50px 0 30px 0;
+    gap: 2rem;
+}
+
+.pricing-container img {
+    display: block;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.pricing-item {
+    display: flex;
+    flex: 1 1 600px;
+    justify-content: space-evenly;
+    margin-bottom: 3rem;
+    align-items: center;
+    gap: 2rem;
+}
+
+.pricing-description {
+    margin: auto 1.5rem;
+}
+
+.pricing-title {
+    font-size: 2.2rem;
+    font-weight: 500;
+    color: #1d3b76;
+    margin-bottom: 0.5rem;
+}
+
+.pricing-description p {
+    font-size: 1.4rem;
+    color: #6d6d6d;
+    font-weight: 470;
+}
+
+.pricing-description .item-price {
+    color: #4c4040;
+    font-weight: 460;
+    font-size: 1.6rem;
+    margin-top: 0.5rem;
+}
+
+/* Responsive Styles for Pricing */
+@media(max-width:500px) {
+    .pricing-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    .pricing-container img {
+        margin: auto;
+    }
+}

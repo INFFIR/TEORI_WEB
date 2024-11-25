@@ -38,6 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const backButton = document.getElementById('back-to-transaction');
   backButton.addEventListener('click', () => {
-    window.location.href = './transaction.html';
+    window.location.href = '../transaction/transaction.html';
   });
 });

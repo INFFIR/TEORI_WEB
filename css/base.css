@@ -1,3 +1,6 @@
+/* base.css */
+
+/* Global Styles */
 @import url('https://fonts.googleapis.com/css2?family=Labrada:wght@300&display=swap');
 
 /* Hide scrollbar but allow scrolling */
@@ -22,5 +25,67 @@ body::-webkit-scrollbar {
 body {
     font-family: 'Labrada', cursive, serif;
     font-size: 62.5%;
-    scroll-behavior: smooth; /* Menambahkan smooth scrolling */
+    scroll-behavior: smooth;
+}
+
+/* Utility Classes */
+.container {
+    max-width: 1200px;
+    width: 90%;
+    margin: auto;
+}
+
+.btn {
+    display: inline-block;
+    padding: 1em 2.5em;
+    text-decoration: none;
+    border-radius: 50px;
+    cursor: pointer;
+    outline: none;
+    margin-top: 1em;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.btn-primary {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 1rem;
+    background-color: #007BFF;
+    color: #fff;
+    border: 0;
+    border-radius: 25px;
+    box-shadow: 0 5px 0 #cce9f9;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Input Placeholder Focus */
+input:focus::placeholder, 
+textarea:focus::placeholder {
+    color: transparent;
+}
+
+/* Fix Font Awesome Icons */
+.fa-solid,
+.fas {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+
+.fa-regular,
+.far {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 400;
+}
+
+.fa-brands,
+.fab {
+    font-family: "Font Awesome 6 Brands";
+    font-weight: 400;
 }

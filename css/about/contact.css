@@ -1,0 +1,78 @@
+/* contact.css */
+
+/* Contact Section */
+#contact {
+    padding: 5rem 0;
+    background: #ffffff;
+}
+
+.contact-container {
+    display: flex;
+    background: #ffffff;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.contact-image {
+    width: 50%;
+}
+
+.contact-container img {
+    display: block;
+    height: 400px;
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+}
+
+.form-container {
+    padding: 1rem;
+    width: 49.5%;
+    margin: auto;
+    margin-left: 2.5rem;
+}
+
+.form-container input,
+.form-container textarea {
+    display: block;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid rgb(234, 234, 234);
+    padding: 1rem 0;
+    outline: none;
+    box-shadow: none;
+    margin-bottom: 1rem;
+    color: #3d0065;
+    font-weight: 400;
+}
+
+.form-container textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.form-container a {
+    font-size: 1.2rem;
+    margin-top: 0.7rem;
+    color: #1d3b76;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.form-container a:hover {
+    color: #0056b3;
+}
+
+/* Responsive Styles for Contact */
+@media(max-width:500px) {
+    .form-container {
+        width: 90%;
+    }
+    .contact-container {
+        flex-direction: column;
+    }
+    .contact-image {
+        width: 90%;
+        margin: 3rem auto;
+    }
+}

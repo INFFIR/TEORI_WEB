@@ -1,3 +1,5 @@
+/* animate.css */
+
 /* Body Animation */
 body {
   animation: fadeInAnimation ease 5s;
@@ -59,8 +61,6 @@ nav {
   animation: anim-flipX 2s ease infinite, textclip 1s linear infinite;
 }
 
-
-
 @keyframes textclip {
   to {
       background-position: 200% center;
@@ -84,8 +84,6 @@ nav {
   animation-iteration-count: infinite;
   animation-duration: 4.5s;
 }
-
-
 
 @keyframes depth {
   0% {
