@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Account Management - Soapy Suds Admin</title>
+  
+  <!-- Common CSS -->
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/account.css">
+  
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <ul>
+      <li><a href="admin.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+      <li><a href="account.html" class="active"><i class="fas fa-user"></i> Account</a></li>
+      <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+      <li><a href="service-category.html"><i class="fas fa-layer-group"></i> Service Category</a></li>
+      <li><a href="service.html"><i class="fas fa-concierge-bell"></i> Service</a></li>
+      <li><a href="step.html"><i class="fas fa-list-ol"></i> Step</a></li>
+      <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+    </ul>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+    <header>
+      <h1>Account Management</h1>
+    </header>
+    
+    <section id="account-management" class="admin-section">
+      <h2>Manage Accounts</h2>
+      <form id="account-form">
+        <div class="form-group">
+          <label for="username_user">Username:</label>
+          <input type="text" id="username_user" name="username_user" required>
+        </div>
+        <div class="form-group">
+          <label for="password_user">Password:</label>
+          <input type="password" id="password_user" name="password_user" required>
+        </div>
+        <div class="form-group">
+          <label for="user_role">User Role:</label>
+          <select id="user_role" name="user_role" required>
+            <option value="">Select Role</option>
+            <option value="admin">Admin</option>
+            <option value="editor">Editor</option>
+            <option value="viewer">Viewer</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Account</button>
+      </form>
+      
+      <hr>
+      
+      <h2>Existing Accounts</h2>
+      <table id="accounts-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Profile Image</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Accounts will be populated here via JavaScript -->
+        </tbody>
+      </table>
+    </section>
+  </div>
+  
+  <!-- Common JS -->
+  <script src="js/sidebar.js"></script>
+  
+  <!-- Page Specific JS -->
+  <script src="js/account.js"></script>
+</body>
+</html>

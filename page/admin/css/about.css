@@ -1,0 +1,191 @@
+/* about.css */
+
+/* Form Styles */
+form#about-form {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0; /* Menambahkan margin untuk form */
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-group textarea,
+.form-group select,
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Pastikan padding tidak merusak layout */
+}
+
+/* Tombol dengan desain primary */
+button.btn-primary {
+    background-color: #1d3b76;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    align-self: flex-start;
+}
+
+button.btn-primary:hover {
+    background-color: #163165;
+}
+
+/* Table Styles */
+#about-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0; /* Menambahkan margin di tabel */
+}
+
+#about-table th,
+#about-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#about-table th {
+    background-color: #1d3b76;
+    color: white;
+}
+
+#about-table td {
+    vertical-align: middle; /* Memastikan teks di tengah */
+}
+
+/* Menambahkan hover efek pada baris tabel */
+#about-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Button untuk aksi (edit, delete) di tabel */
+.action-btn {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.edit-btn {
+    background-color: #28a745;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+}
+
+.action-btn:hover {
+    opacity: 0.8;
+}
+
+/* Modal Styles */
+#edit-form-container {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+    animation: fadeIn 0.3s ease; /* Menambahkan animasi untuk membuka modal */
+}
+
+/* Modal Form Styling */
+#edit-form {
+    background-color: #fefefe;
+    margin: 10% auto; /* 10% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Could be more or less, depending on screen size */
+    border-radius: 8px; /* Menambahkan border-radius agar lebih modern */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Efek bayangan */
+}
+
+#edit-form .form-group {
+    margin-bottom: 15px;
+}
+
+#edit-form .form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#edit-form .form-group input,
+#edit-form .form-group textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Button styling dalam modal */
+#edit-form .form-actions {
+    text-align: right;
+}
+
+#edit-form .btn {
+    padding: 10px 20px;
+    margin-left: 10px;
+    background-color: #1d3b76;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#edit-form .btn:hover {
+    background-color: #163165;
+}
+
+/* Modal Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    /* Menyesuaikan modal pada layar kecil */
+    #edit-form {
+        width: 90%;
+    }
+
+    /* Menyesuaikan form untuk perangkat mobile */
+    form#about-form {
+        margin: 10px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        padding: 8px;
+    }
+
+    #about-table th, #about-table td {
+        padding: 5px;
+    }
+}

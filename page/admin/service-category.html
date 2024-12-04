@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Service Category Management - Soapy Suds Admin</title>
+  
+  <!-- Common CSS -->
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/service-category.css">
+  
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <ul>
+      <li><a href="admin.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+      <li><a href="account.html"><i class="fas fa-user"></i> Account</a></li>
+      <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+      <li><a href="service-category.html" class="active"><i class="fas fa-layer-group"></i> Service Category</a></li>
+      <li><a href="service.html"><i class="fas fa-concierge-bell"></i> Service</a></li>
+      <li><a href="step.html"><i class="fas fa-list-ol"></i> Step</a></li>
+      <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+    </ul>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+    <header>
+      <h1>Service Category Management</h1>
+    </header>
+    
+    <section id="service-category-management" class="admin-section">
+      <h2>Manage Service Categories</h2>
+      <form id="service-category-form">
+        <div class="form-group">
+          <label for="title">Category Title:</label>
+          <input type="text" id="title" name="title" required>
+        </div>
+        <div class="form-group">
+          <label for="service_icon">Service Icon:</label>
+          <input type="file" id="service_icon" name="service_icon" accept="image/*">
+        </div>
+        <div class="form-group">
+          <label for="service_description">Service Description:</label>
+          <textarea id="service_description" name="service_description" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Service Category</button>
+      </form>
+      
+      <hr>
+      
+      <h2>Existing Service Categories</h2>
+      <table id="service-category-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Icon</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Service categories will be populated here via JavaScript -->
+        </tbody>
+      </table>
+    </section>
+  </div>
+  
+  <!-- Common JS -->
+  <script src="js/sidebar.js"></script>
+  
+  <!-- Page Specific JS -->
+  <script src="js/service-category.js"></script>
+</body>
+</html>

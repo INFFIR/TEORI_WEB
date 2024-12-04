@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Management - Soapy Suds Admin</title>
+  
+  <!-- Common CSS -->
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/about.css">
+  
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <style>
+
+
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <ul>
+      <li><a href="admin.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+      <li><a href="account.html"><i class="fas fa-user"></i> Account</a></li>
+      <li><a href="about.html" class="active"><i class="fas fa-info-circle"></i> About</a></li>
+      <li><a href="service-category.html"><i class="fas fa-layer-group"></i> Service Category</a></li>
+      <li><a href="service.html"><i class="fas fa-concierge-bell"></i> Service</a></li>
+      <li><a href="step.html"><i class="fas fa-list-ol"></i> Step</a></li>
+      <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+    </ul>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+    <header>
+      <h1>About Management</h1>
+    </header>
+    
+    <section id="about-management" class="admin-section">
+      <h2>Manage About Section</h2>
+      <form id="about-form">
+        <div class="form-group">
+          <label for="about_title">About Title:</label> <!-- Tambahan -->
+          <input type="text" id="about_title" name="about_title" placeholder="Enter about title (optional)">
+        </div>
+        <div class="form-group">
+          <label for="description_about">Description:</label>
+          <textarea id="description_about" name="description_about" rows="6" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="image_url_about">About Image:</label>
+          <input type="file" id="image_url_about" name="image_url_about" accept="image/*">
+        </div>
+        <button type="submit" class="btn btn-primary">Add About Section</button>
+      </form>
+      
+      <hr>
+      
+      <h2>Existing About Sections</h2>
+      <table id="about-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th> <!-- Dipisahkan -->
+            <th>Description</th> <!-- Dipisahkan -->
+            <th>Image</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- About sections will be populated here via JavaScript -->
+        </tbody>
+      </table>
+    </section>
+  </div>
+  
+  <!-- Edit Form Modal -->
+  <div id="edit-form-container">
+    <form id="edit-form">
+      <h2>Edit About Section</h2>
+      <input type="hidden" id="edit_about_id" name="about_id">
+      <div class="form-group">
+        <label for="edit_about_title">About Title:</label> <!-- Tambahan -->
+        <input type="text" id="edit_about_title" name="about_title" placeholder="Enter about title (optional)">
+      </div>
+      <div class="form-group">
+        <label for="edit_description_about">Description:</label>
+        <textarea id="edit_description_about" name="description_about" rows="6" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="edit_image_url_about">About Image:</label>
+        <input type="file" id="edit_image_url_about" name="image_url_about" accept="image/*">
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" id="cancel-edit">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </form>
+  </div>
+  
+  <!-- Common JS -->
+  <script src="js/sidebar.js"></script>
+  
+  <!-- Page Specific JS -->
+  <script src="js/about.js"></script>
+</body>
+</html>

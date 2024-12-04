@@ -108,3 +108,89 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Menangani perubahan hash di URL
     handleHashChange();
 });
+
+
+
+// --- Start of Dynamic About Section Code ---
+
+/**
+ * Fungsi untuk mengambil data About dari API dan menampilkannya di halaman.
+ */
+async function loadDynamicAboutSections() {
+    try {
+        const response = await fetch('http://localhost:8000/api/about.php', {
+            method: 'GET'
+        });
+
+        const data = await response.json();
+
+        if (data.success && Array.isArray(data.data)) {
+            const aboutSections = document.getElementById('about-sections');
+            aboutSections.innerHTML = ''; // Kosongkan konten sebelumnya
+
+            data.data.forEach((about, index) => {
+                const wrapper = document.createElement('div');
+                wrapper.classList.add('about-wrapper', 'container');
+
+                // Alternating layout: index genap - teks pertama, gambar kedua; index ganjil - gambar pertama, teks kedua
+                if (index % 2 === 0) {
+                    wrapper.innerHTML = `
+                        <div class="about-text">
+                            <h3 class="about-head">${escapeHtml(about.about_title || '')}</h3>
+                            <p>${escapeHtml(about.description_about)}</p>
+                        </div>
+                        <div class="about-img ${about.image_url_about ? '' : 'no-image'}">
+                            ${about.image_url_about ? `<img src="${about.image_url_about}" alt="${escapeHtml(about.about_title || '')}">` : ''}
+                        </div>
+                    `;
+                } else {
+                    wrapper.innerHTML = `
+                        <div class="about-img2 ${about.image_url_about ? '' : 'no-image'}">
+                            ${about.image_url_about ? `<img src="${about.image_url_about}" alt="${escapeHtml(about.about_title || '')}">` : ''}
+                        </div>
+                        <div class="about-text2">
+                            <h3 class="about-head">${escapeHtml(about.about_title || '')}</h3>
+                            <p>${escapeHtml(about.description_about)}</p>
+                        </div>
+                    `;
+                }
+
+                aboutSections.appendChild(wrapper);
+            });
+        } else {
+            console.warn('No about sections found or failed to fetch data.');
+            const aboutSections = document.getElementById('about-sections');
+            aboutSections.innerHTML = '<p>No about sections available at the moment.</p>';
+        }
+    } catch (error) {
+        console.error('Error fetching about sections:', error);
+        const aboutSections = document.getElementById('about-sections');
+        aboutSections.innerHTML = '<p>Error loading about sections. Please try again later.</p>';
+    }
+}
+
+/**
+ * Fungsi untuk mencegah XSS dengan escaping HTML.
+ * @param {string} text - Teks yang akan di-escape.
+ * @returns {string} - Teks yang sudah di-escape.
+ */
+function escapeHtml(text) {
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;',
+        '`': '&#x60;'
+    };
+    return text.replace(/[&<>"'`]/g, function(m) { return map[m]; });
+}
+
+// Panggil fungsi loadDynamicAboutSections setelah seluruh komponen dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    loadDynamicAboutSections();
+});
+
+
+
+// --- End of Dynamic About Section Code ---

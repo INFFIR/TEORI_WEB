@@ -1,0 +1,2 @@
+<h3 class="about-head">${escapeHtml(about.title || 'About Us')}</h3>
+                            <h3 class="about-head">${escapeHtml(about.title || 'About Us')}</h3>

@@ -1,139 +1,28 @@
 /* admin.css */
 
-/* Base Styles */
-body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f4f8fc;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .admin-wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  
-  /* Header */
-  header {
-    background-color: #1d3b76;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  header h1 {
-    margin: 0;
-    font-size: 2.5rem;
-  }
-  
-  /* Navigation */
-  .admin-nav {
-    background-color: #edf2f7;
-    padding: 10px 20px;
-  }
-  
-  .admin-nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-  
-  .admin-nav ul li {
-    margin: 0 10px;
-  }
-  
-  .admin-nav ul li a {
-    text-decoration: none;
-    color: #1d3b76;
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-  }
-  
-  .admin-nav ul li a i {
-    margin-right: 8px;
-  }
-  
-  /* Main Content */
-  main {
-    flex: 1;
-    padding: 20px;
-  }
-  
-  .admin-section {
-    background-color: #fff;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .admin-section h2 {
-    margin-bottom: 15px;
-    color: #1d3b76;
-  }
-  
-  .form-group, .pricing-item {
-    margin-bottom: 15px;
-  }
-  
-  .form-group label, .pricing-item label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-  }
-  
-  .form-group input[type="text"],
-  .form-group input[type="email"],
-  .form-group input[type="number"],
-  .form-group input[type="file"],
-  .form-group textarea,
-  .form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .pricing-item input[type="number"] {
-    width: 100%;
-    padding: 8px;
-  }
-  
-  button.btn-primary {
-    background-color: #1d3b76;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-  }
-  
-  button.btn-primary:hover {
-    background-color: #163165;
-  }
-  
-  /* Footer */
-  footer {
-    background-color: #1d3b76;
-    color: #fff;
-    text-align: center;
-    padding: 15px;
-    font-size: 1rem;
-  }
-  
-  /* Responsive Styles */
-  @media (max-width: 768px) {
-    .admin-nav ul {
-      flex-direction: column;
-    }
-  
-    .admin-nav ul li {
-      margin: 10px 0;
-    }
-  }
-  
+/* Header Styles */
+header {
+  background-color: #1d3b76;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+/* Admin Section Styles */
+.admin-section {
+  background-color: #fff;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-section p {
+  font-size: 1.2rem;
+  color: #333;
+}

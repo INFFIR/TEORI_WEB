@@ -8,6 +8,7 @@
 .about-wrapper {
     display: flex;
     flex-wrap: wrap;
+    margin-bottom: 20px;
 }
 
 #about p {
@@ -20,6 +21,10 @@
     padding: 30px;
     opacity: 0.88;
     transition: transform 4s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px; /* Menjamin gambar punya tinggi minimal */
 }
 
 .about-text, .about-text2 {
@@ -37,10 +42,10 @@
 
 .about-img img, .about-img2 img {
     display: block;
-    height: 400px;
     max-width: 100%;
-    margin: auto;
+    height: 100%;
     object-fit: cover;
+    object-position: center;
 }
 
 .about-img img {
@@ -55,12 +60,18 @@
     transform: scale(1);
 }
 
+/* Jika gambar tidak ada, sembunyikan gambar dengan kelas "no-image" */
+.about-img.no-image, .about-img2.no-image {
+    display: none;
+}
+
 /* Responsive Styles for About Section */
 @media (max-width: 500px) {
     .about-img, .about-img2, .about-text, .about-text2 {
         flex: 1 1 100%;
         padding: 20px;
     }
+
     .about-img img, .about-img2 img {
         height: auto;
     }

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Service Offered Management - Soapy Suds Admin</title>
+  
+  <!-- Common CSS -->
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/service.css">
+  
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <ul>
+      <li><a href="admin.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+      <li><a href="account.html"><i class="fas fa-user"></i> Account</a></li>
+      <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+      <li><a href="service-category.html"><i class="fas fa-layer-group"></i> Service Category</a></li>
+      <li><a href="service.html" class="active"><i class="fas fa-concierge-bell"></i> Service</a></li>
+      <li><a href="step.html"><i class="fas fa-list-ol"></i> Step</a></li>
+      <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+    </ul>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+    <header>
+      <h1>Service Offered Management</h1>
+    </header>
+    
+    <section id="service-management" class="admin-section">
+      <h2>Manage Services</h2>
+      <form id="service-form">
+        <div class="form-group">
+          <label for="category_id">Service Category:</label>
+          <select id="category_id" name="category_id" required>
+            <option value="">Select Category</option>
+            <!-- Categories will be populated via JavaScript -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="offered_name">Service Name:</label>
+          <input type="text" id="offered_name" name="offered_name" required>
+        </div>
+        <div class="form-group">
+          <label for="offered_price">Service Price:</label>
+          <input type="number" id="offered_price" name="offered_price" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="offered_description">Service Description:</label>
+          <textarea id="offered_description" name="offered_description" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="offered_image_url">Service Image:</label>
+          <input type="file" id="offered_image_url" name="offered_image_url" accept="image/*">
+        </div>
+        <button type="submit" class="btn btn-primary">Add Service</button>
+      </form>
+      
+      <hr>
+      
+      <h2>Existing Services</h2>
+      <table id="service-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Category</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Services will be populated here via JavaScript -->
+        </tbody>
+      </table>
+    </section>
+  </div>
+  
+  <!-- Common JS -->
+  <script src="js/sidebar.js"></script>
+  
+  <!-- Page Specific JS -->
+  <script src="js/service.js"></script>
+</body>
+</html>
