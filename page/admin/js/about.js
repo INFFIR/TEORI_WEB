@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     aboutForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const about_title = document.getElementById('about_title').value.trim(); // Tambahan
+        const about_title = document.getElementById('about_title').value.trim();
         const description_about = document.getElementById('description_about').value.trim();
         const imageInput = document.getElementById('image_url_about');
         const image_url_about = imageInput.files[0];
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const formData = new FormData();
-        formData.append('about_title', about_title); // Tambahan
+        formData.append('about_title', about_title);
         formData.append('description_about', description_about);
         if (image_url_about) {
             formData.append('image_url_about', image_url_about);
@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td>${about.about_id}</td>
-                        <td>${about.about_title ? escapeHtml(about.about_title) : 'N/A'}</td> <!-- Kolom Title -->
-                        <td>${escapeHtml(about.description_about)}</td> <!-- Kolom Description -->
+                        <td>${about.about_title ? escapeHtml(about.about_title) : 'N/A'}</td>
+                        <td>${escapeHtml(about.description_about)}</td>
                         <td>${about.image_url_about ? `<img src="${about.image_url_about}" alt="About Image" width="50">` : 'N/A'}</td>
                         <td>
                             <button class="action-btn edit-btn" onclick="editAbout(${about.about_id})">Edit</button>
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.success && data.data.about_id) {
                 // Populate form edit dengan data yang ada
                 document.getElementById('edit_about_id').value = data.data.about_id;
-                document.getElementById('edit_about_title').value = data.data.about_title || ''; // Tambahan
+                document.getElementById('edit_about_title').value = data.data.about_title || '';
                 document.getElementById('edit_description_about').value = data.data.description_about;
                 // Menampilkan form edit
                 editFormContainer.style.display = 'block';
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
 
         const about_id = document.getElementById('edit_about_id').value;
-        const about_title = document.getElementById('edit_about_title').value.trim(); // Tambahan
+        const about_title = document.getElementById('edit_about_title').value.trim();
         const description_about = document.getElementById('edit_description_about').value.trim();
         const imageInput = document.getElementById('edit_image_url_about');
         const image_url_about = imageInput.files[0];
@@ -143,7 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const formData = new FormData();
-        formData.append('about_title', about_title); // Tambahan
+        formData.append('action', 'update'); // Tambahkan parameter action
+        formData.append('about_title', about_title);
         formData.append('description_about', description_about);
         if (image_url_about) {
             formData.append('image_url_about', image_url_about);

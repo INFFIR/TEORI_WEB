@@ -74,7 +74,14 @@ function closeMobileMenu() {
  */
 document.addEventListener('DOMContentLoaded', async () => {
     const pageId = document.body.id;
-
+    try {
+        const response = await fetch('http://localhost:8000/api/about.php', {
+            method: 'GET'
+        });    } catch (error) {
+            console.error('Error fetching about sections:', error);
+            const aboutSections = document.getElementById('about-sections');
+            aboutSections.innerHTML = '<p>Error loading about sections. Please try again later.</p>';
+        }
     // Daftar komponen yang akan dimuat
     const components = [
         './components/navbar.html',
@@ -123,21 +130,24 @@ async function loadDynamicAboutSections() {
         });
 
         const data = await response.json();
+        console.log('API Response:', data);
 
         if (data.success && Array.isArray(data.data)) {
             const aboutSections = document.getElementById('about-sections');
-            aboutSections.innerHTML = ''; // Kosongkan konten sebelumnya
+            aboutSections.innerHTML = ''; // Clear previous content
 
             data.data.forEach((about, index) => {
+                console.log(`Processing About Item ${index}:`, about);
+
                 const wrapper = document.createElement('div');
                 wrapper.classList.add('about-wrapper', 'container');
 
-                // Alternating layout: index genap - teks pertama, gambar kedua; index ganjil - gambar pertama, teks kedua
+                // Alternating layout
                 if (index % 2 === 0) {
                     wrapper.innerHTML = `
                         <div class="about-text">
                             <h3 class="about-head">${escapeHtml(about.about_title || '')}</h3>
-                            <p>${escapeHtml(about.description_about)}</p>
+                            <p>${escapeHtml(about.description_about || '')}</p>
                         </div>
                         <div class="about-img ${about.image_url_about ? '' : 'no-image'}">
                             ${about.image_url_about ? `<img src="${about.image_url_about}" alt="${escapeHtml(about.about_title || '')}">` : ''}
@@ -150,11 +160,12 @@ async function loadDynamicAboutSections() {
                         </div>
                         <div class="about-text2">
                             <h3 class="about-head">${escapeHtml(about.about_title || '')}</h3>
-                            <p>${escapeHtml(about.description_about)}</p>
+                            <p>${escapeHtml(about.description_about || '')}</p>
                         </div>
                     `;
                 }
 
+                console.log('Appending wrapper:', wrapper);
                 aboutSections.appendChild(wrapper);
             });
         } else {
@@ -170,11 +181,14 @@ async function loadDynamicAboutSections() {
 }
 
 /**
- * Fungsi untuk mencegah XSS dengan escaping HTML.
- * @param {string} text - Teks yang akan di-escape.
- * @returns {string} - Teks yang sudah di-escape.
+ * Function to prevent XSS by escaping HTML.
+ * @param {string} text - Text to be escaped.
+ * @returns {string} - Escaped text.
  */
 function escapeHtml(text) {
+    if (typeof text !== 'string') {
+        return '';
+    }
     const map = {
         '&': '&amp;',
         '<': '&lt;',
@@ -186,10 +200,11 @@ function escapeHtml(text) {
     return text.replace(/[&<>"'`]/g, function(m) { return map[m]; });
 }
 
-// Panggil fungsi loadDynamicAboutSections setelah seluruh komponen dimuat
+// Call the function after all components are loaded
 document.addEventListener('DOMContentLoaded', () => {
     loadDynamicAboutSections();
 });
+
 
 
 
