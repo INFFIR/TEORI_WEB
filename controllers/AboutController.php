@@ -40,7 +40,7 @@ class AboutController {
     public function create(){
         // Akses data form dan unggah file
         $description_about = isset($_POST['description_about']) ? trim($_POST['description_about']) : '';
-        $about_title = isset($_POST['about_title']) ? trim($_POST['about_title']) : ''; // Tambahan
+        $about_title = isset($_POST['about_title']) ? trim($_POST['about_title']) : '';
         $image_url_about = isset($_FILES['image_url_about']) ? $_FILES['image_url_about'] : null;
 
         if ($description_about) {
@@ -50,7 +50,7 @@ class AboutController {
             // Siapkan data untuk model
             $data = [
                 'description_about' => $description_about,
-                'about_title' => $about_title // Tambahan
+                'about_title' => $about_title
             ];
             if ($imagePath) {
                 // Asumsikan image_url_about harus berupa URL yang dapat diakses oleh frontend
@@ -73,7 +73,7 @@ class AboutController {
     public function updateWithImage($id){
         // Akses data form dan unggah file
         $description_about = isset($_POST['description_about']) ? trim($_POST['description_about']) : '';
-        $about_title = isset($_POST['about_title']) ? trim($_POST['about_title']) : ''; // Tambahan
+        $about_title = isset($_POST['about_title']) ? trim($_POST['about_title']) : '';
         $image_url_about = isset($_FILES['image_url_about']) ? $_FILES['image_url_about'] : null;
 
         if ($description_about) {
@@ -81,7 +81,7 @@ class AboutController {
             $imagePath = $this->handleImageUpload($image_url_about);
             $updateData = [
                 'description_about' => $description_about,
-                'about_title' => $about_title // Tambahan
+                'about_title' => $about_title
             ];
 
             if ($imagePath) {
@@ -112,15 +112,22 @@ class AboutController {
     }
 
     // Memperbarui entri About tanpa gambar (Opsional)
-    public function update($id, $data){
-        $description_about = isset($data['description_about']) ? trim($data['description_about']) : '';
-        $about_title = isset($data['about_title']) ? trim($data['about_title']) : ''; // Tambahan
+    public function update($id, $data = null){
+        // Jika data tidak diberikan, ambil dari $_POST
+        if ($data === null) {
+            $data = [];
+            $data['description_about'] = isset($_POST['description_about']) ? trim($_POST['description_about']) : '';
+            $data['about_title'] = isset($_POST['about_title']) ? trim($_POST['about_title']) : '';
+        }
+
+        $description_about = isset($data['description_about']) ? $data['description_about'] : '';
+        $about_title = isset($data['about_title']) ? $data['about_title'] : '';
 
         if ($description_about) {
             // Siapkan data untuk pembaruan
             $updateData = [
                 'description_about' => $description_about,
-                'about_title' => $about_title // Tambahan
+                'about_title' => $about_title
             ];
 
             // Panggil model untuk memperbarui data
