@@ -43,7 +43,7 @@
           <label for="category_id">Service Category:</label>
           <select id="category_id" name="category_id" required>
             <option value="">Select Category</option>
-            <!-- Categories will be populated via JavaScript -->
+            <!-- Categories akan diisi via JavaScript -->
           </select>
         </div>
         <div class="form-group">
@@ -81,10 +81,46 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Services will be populated here via JavaScript -->
+          <!-- Services akan diisi via JavaScript -->
         </tbody>
       </table>
     </section>
+  </div>
+  
+  <!-- Edit Modal -->
+  <div id="edit-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2>Edit Service</h2>
+      <form id="edit-service-form">
+        <input type="hidden" id="edit_offered_id" name="offered_id">
+        <div class="form-group">
+          <label for="edit_category_id">Service Category:</label>
+          <select id="edit_category_id" name="category_id">
+            <option value="">Select Category</option>
+            <!-- Categories akan diisi via JavaScript -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="edit_offered_name">Service Name:</label>
+          <input type="text" id="edit_offered_name" name="offered_name">
+        </div>
+        <div class="form-group">
+          <label for="edit_offered_price">Service Price:</label>
+          <input type="number" id="edit_offered_price" name="offered_price" min="0">
+        </div>
+        <div class="form-group">
+          <label for="edit_offered_description">Service Description:</label>
+          <textarea id="edit_offered_description" name="offered_description" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="edit_offered_image_url">Service Image:</label>
+          <input type="file" id="edit_offered_image_url" name="offered_image_url" accept="image/*">
+          <small>If you want to change the image, upload a new one.</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Service</button>
+      </form>
+    </div>
   </div>
   
   <!-- Common JS -->
