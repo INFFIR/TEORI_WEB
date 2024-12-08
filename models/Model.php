@@ -18,6 +18,16 @@ class Model {
         return $this->conn;
     }
 
+    // Metode getter untuk $table
+    public function getTable(){
+        return $this->table;
+    }
+
+    // Metode getter untuk $primaryKey
+    public function getPrimaryKey(){
+        return $this->primaryKey;
+    }
+
     public function getAll(){
         $query = "SELECT * FROM {$this->table}";
         $stmt = $this->conn->prepare($query);
@@ -44,21 +54,35 @@ class Model {
         return $stmt->execute();
     }
 
+    /**
+     * Memperbarui data berdasarkan ID dengan mendukung partial update
+     * 
+     * @param int $id
+     * @param array $data
+     * @return bool
+     */
     public function update($id, $data){
+        if(empty($data)){
+            // Tidak ada data untuk diupdate
+            return false;
+        }
+
+        // Membangun bagian SET dari query secara dinamis
         $fields = "";
         foreach($data as $key => $value){
             $fields .= "{$key} = :{$key}, ";
         }
         $fields = rtrim($fields, ", ");
+
         $query = "UPDATE {$this->table} SET {$fields} WHERE {$this->primaryKey} = :id";
         $stmt = $this->conn->prepare($query);
-        $data['id'] = $id;
+
+        // Mengikat nilai parameter
         foreach($data as $key => &$value){
-            if($key !== 'id') { // Avoid binding 'id' twice
-                $stmt->bindParam(":".$key, $value);
-            }
+            $stmt->bindParam(":".$key, $value);
         }
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+
         return $stmt->execute();
     }
 
