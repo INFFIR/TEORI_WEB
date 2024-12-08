@@ -120,8 +120,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // --- Start of Dynamic About Section Code ---
 
-/**
+/*
  * Fungsi untuk mengambil data About dari API dan menampilkannya di halaman.
+ * ----------------------------------------------------------------------------------------------------
+ * ABOUT
+ * ----------------------------------------------------------------------------------------------------
  */
 async function loadDynamicAboutSections() {
     try {
@@ -204,7 +207,11 @@ function escapeHtml(text) {
 document.addEventListener('DOMContentLoaded', () => {
     loadDynamicAboutSections();
 });
-
+/*
+ * ----------------------------------------------------------------------------------------------------
+ * ABOUT
+ * ----------------------------------------------------------------------------------------------------
+*/
 
 
 

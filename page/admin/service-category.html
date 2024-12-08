@@ -38,18 +38,22 @@
     
     <section id="service-category-management" class="admin-section">
       <h2>Manage Service Categories</h2>
-      <form id="service-category-form">
+      <form id="service-category-form" enctype="multipart/form-data">
         <div class="form-group">
           <label for="title">Category Title:</label>
           <input type="text" id="title" name="title" required>
         </div>
         <div class="form-group">
-          <label for="service_icon">Service Icon:</label>
-          <input type="file" id="service_icon" name="service_icon" accept="image/*">
+          <label for="category_icon">Category Icon:</label>
+          <input type="file" id="category_icon" name="category_icon" accept="image/*" required>
         </div>
         <div class="form-group">
-          <label for="service_description">Service Description:</label>
-          <textarea id="service_description" name="service_description" rows="4" required></textarea>
+          <label for="category_image">Category Image:</label>
+          <input type="file" id="category_image" name="category_image" accept="image/*">
+        </div>
+        <div class="form-group">
+          <label for="category_description">Category Description:</label>
+          <textarea id="category_description" name="category_description" rows="4" required></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Add Service Category</button>
       </form>
@@ -63,6 +67,7 @@
             <th>ID</th>
             <th>Title</th>
             <th>Icon</th>
+            <th>Image</th>
             <th>Description</th>
             <th>Actions</th>
           </tr>
@@ -72,6 +77,36 @@
         </tbody>
       </table>
     </section>
+  </div>
+  
+  <!-- Edit Form Modal -->
+  <div id="edit-form-container">
+    <form id="edit-form">
+      <h2>Edit Service Category</h2>
+      <input type="hidden" id="edit_category_id" name="category_id">
+      <div class="form-group">
+        <label for="edit_title">Category Title:</label>
+        <input type="text" id="edit_title" name="title" required>
+      </div>
+      <div class="form-group">
+        <label for="edit_category_icon">Category Icon:</label>
+        <input type="file" id="edit_category_icon" name="category_icon" accept="image/*">
+        <small>If you want to change the icon, upload a new one.</small>
+      </div>
+      <div class="form-group">
+        <label for="edit_category_image">Category Image:</label>
+        <input type="file" id="edit_category_image" name="category_image" accept="image/*">
+        <small>If you want to change the image, upload a new one.</small>
+      </div>
+      <div class="form-group">
+        <label for="edit_category_description">Category Description:</label>
+        <textarea id="edit_category_description" name="category_description" rows="4" required></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" id="cancel-edit">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </form>
   </div>
   
   <!-- Common JS -->
