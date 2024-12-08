@@ -4,7 +4,7 @@
 require_once __DIR__ . '/../controllers/StepOrderController.php';
 
 // Set headers
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: *"); // Ganti '*' dengan origin frontend Anda untuk keamanan
 header("Content-Type: application/json; charset=UTF-8");
 
 // Handle OPTIONS request method for CORS preflight
@@ -14,14 +14,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
+// Determine the HTTP method
+$method = $_SERVER['REQUEST_METHOD'];
+
+// Method Override (for PUT and DELETE via POST)
+if ($method == 'POST' && isset($_POST['_method'])) {
+    $method = strtoupper($_POST['_method']);
+}
+
+// Get the ID from the URL if present
+$id = null;
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+    $id = intval($_GET['id']);
+}
+
 // Instantiate controller
 $controller = new StepOrderController();
 
-// Determine the HTTP method
-$method = $_SERVER['REQUEST_METHOD'];
-// Get the ID from the URL if present
-$id = isset($_GET['id']) ? intval($_GET['id']) : null;
-
+// Routing berdasarkan metode HTTP
 switch($method){
     case 'GET':
         if($id){
@@ -37,18 +47,18 @@ switch($method){
         if($id){
             $controller->update($id);
         } else {
-            echo json_encode(["message" => "ID is required for update."]);
+            echo json_encode(["success" => false, "message" => "ID is required for update."]);
         }
         break;
     case 'DELETE':
         if($id){
             $controller->delete($id);
         } else {
-            echo json_encode(["message" => "ID is required for deletion."]);
+            echo json_encode(["success" => false, "message" => "ID is required for deletion."]);
         }
         break;
     default:
-        echo json_encode(["message" => "Method not allowed."]);
+        echo json_encode(["success" => false, "message" => "Method not allowed."]);
         break;
 }
 ?>
