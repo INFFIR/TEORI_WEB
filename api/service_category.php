@@ -19,6 +19,12 @@ $controller = new ServiceCategoryController();
 
 // Determine the HTTP method
 $method = $_SERVER['REQUEST_METHOD'];
+
+// Method Override (for PUT and DELETE via POST)
+if ($method == 'POST' && isset($_POST['_method'])) {
+    $method = strtoupper($_POST['_method']);
+}
+
 // Get the ID from the URL if present
 $id = isset($_GET['id']) ? intval($_GET['id']) : null;
 
@@ -35,20 +41,20 @@ switch($method){
         break;
     case 'PUT':
         if($id){
-            $controller->update($id);
+            $controller->updateWithImage($id);
         } else {
-            echo json_encode(["message" => "ID is required for update."]);
+            echo json_encode(["success" => false, "message" => "ID is required for update."]);
         }
         break;
     case 'DELETE':
         if($id){
             $controller->delete($id);
         } else {
-            echo json_encode(["message" => "ID is required for deletion."]);
+            echo json_encode(["success" => false, "message" => "ID is required for deletion."]);
         }
         break;
     default:
-        echo json_encode(["message" => "Method not allowed."]);
+        echo json_encode(["success" => false, "message" => "Method not allowed."]);
         break;
 }
 ?>

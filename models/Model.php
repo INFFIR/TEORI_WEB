@@ -28,7 +28,7 @@ class Model {
     public function getById($id){
         $query = "SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id", $id);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt;
     }
@@ -54,15 +54,18 @@ class Model {
         $stmt = $this->conn->prepare($query);
         $data['id'] = $id;
         foreach($data as $key => &$value){
-            $stmt->bindParam(":".$key, $value);
+            if($key !== 'id') { // Avoid binding 'id' twice
+                $stmt->bindParam(":".$key, $value);
+            }
         }
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
 
     public function delete($id){
         $query = "DELETE FROM {$this->table} WHERE {$this->primaryKey} = :id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id", $id);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
 }
