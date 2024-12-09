@@ -1,97 +1,97 @@
-// admin.js
+const API_URL = 'http://localhost/laundry/api'; // Sesuaikan jika Anda menggunakan port lain
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Manage Content Form
-  const contentForm = document.getElementById('content-form');
-  contentForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+async function fetchCategories() {
+  const response = await axios.get(`${API_URL}/categories.php`);
+  const categories = response.data;
+  const categoryTableBody = document.getElementById('category-table-body');
+  const offeredCategorySelect = document.getElementById('offered_category');
+
+  // Clear current dropdown and table
+  categoryTableBody.innerHTML = '';
+  offeredCategorySelect.innerHTML = '<option value="">Select Category</option>'; // Reset dropdown
+
+  categories.forEach(category => {
+    // Add category to the table
+    categoryTableBody.innerHTML += `
+      <tr>
+        <td>${category.category_id}</td>
+        <td><img src="${category.service_icon}" width="50"></td>
+        <td>${category.service_description}</td>
+        <td><button class="btn btn-danger" onclick="deleteCategory(${category.category_id})">Delete</button></td>
+      </tr>
+    `;
     
-    const aboutText = document.getElementById('about-text').value;
-    const servicesText = document.getElementById('services-text').value;
-    const contactText = document.getElementById('contact-text').value;
-    
-    localStorage.setItem('aboutText', aboutText);
-    localStorage.setItem('servicesText', servicesText);
-    localStorage.setItem('contactText', contactText);
-    
-    alert('Content Updated Successfully!');
+    // Add category to dropdown
+    offeredCategorySelect.innerHTML += `
+      <option value="${category.category_id}">${category.service_description}</option>
+    `;
   });
-  
-  // Manage Images Form
-  const imagesForm = document.getElementById('images-form');
-  imagesForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const logoInput = document.getElementById('logo');
-    const aboutImageInput = document.getElementById('about-image');
-    const contactImageInput = document.getElementById('contact-image');
-    
-    if (logoInput.files.length > 0) {
-      const logoFile = logoInput.files[0];
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        localStorage.setItem('logoImage', event.target.result);
-        alert('Logo Updated Successfully!');
-      }
-      reader.readAsDataURL(logoFile);
-    }
-    
-    if (aboutImageInput.files.length > 0) {
-      const aboutImageFile = aboutImageInput.files[0];
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        localStorage.setItem('aboutImage', event.target.result);
-        alert('About Us Image Updated Successfully!');
-      }
-      reader.readAsDataURL(aboutImageFile);
-    }
-    
-    if (contactImageInput.files.length > 0) {
-      const contactImageFile = contactImageInput.files[0];
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        localStorage.setItem('contactImage', event.target.result);
-        alert('Contact Image Updated Successfully!');
-      }
-      reader.readAsDataURL(contactImageFile);
-    }
+}
+
+
+async function fetchOfferedServices() {
+  const response = await axios.get(`${API_URL}/services.php`);
+  const services = response.data;
+  const serviceTableBody = document.getElementById('service-table-body');
+  serviceTableBody.innerHTML = '';
+
+  services.forEach(service => {
+    serviceTableBody.innerHTML += `
+      <tr>
+        <td>${service.offered_id}</td>
+        <td>${service.category_id}</td>
+        <td><img src="${service.offered_image_url}" width="50"></td>
+        <td>${service.offered_name}</td>
+        <td>${service.offered_price}</td>
+        <td>${service.offered_description}</td>
+        <td><button class="btn btn-danger" onclick="deleteService(${service.offered_id})">Delete</button></td>
+      </tr>
+    `;
   });
-  
-  // Manage Pricing Form
-  const pricingForm = document.getElementById('pricing-form');
-  pricingForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const price1 = document.getElementById('price1').value;
-    const price2 = document.getElementById('price2').value;
-    // Tambahkan lebih banyak harga sesuai kebutuhan
-    
-    const pricingData = {
-      price1: price1,
-      price2: price2,
-      // Tambahkan lebih banyak harga sesuai kebutuhan
-    };
-    
-    localStorage.setItem('pricingData', JSON.stringify(pricingData));
-    
-    alert('Pricing Updated Successfully!');
+}
+
+document.getElementById('category-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const serviceIcon = document.getElementById('service_icon').value;
+  const serviceDescription = document.getElementById('service_description').value;
+
+  await axios.post(`${API_URL}/categories.php`, {
+    service_icon: serviceIcon,
+    service_description: serviceDescription,
   });
-  
-  // Manage Settings Form
-  const settingsForm = document.getElementById('settings-form');
-  settingsForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const themeColor = document.getElementById('theme-color').value;
-    const fontFamily = document.getElementById('font-family').value;
-    
-    localStorage.setItem('themeColor', themeColor);
-    localStorage.setItem('fontFamily', fontFamily);
-    
-    alert('Settings Updated Successfully!');
-    
-    // Terapkan perubahan segera
-    document.documentElement.style.setProperty('--theme-color', themeColor);
-    document.body.style.fontFamily = fontFamily;
-  });
+  fetchCategories();
 });
+
+document.getElementById('offered-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const categoryId = document.getElementById('offered_category').value;
+  const imageUrl = document.getElementById('offered_image_url').value;
+  const name = document.getElementById('offered_name').value;
+  const price = document.getElementById('offered_price').value;
+  const description = document.getElementById('offered_description').value;
+
+  await axios.post(`${API_URL}/services.php`, {
+    category_id: categoryId,
+    offered_image_url: imageUrl,
+    offered_name: name,
+    offered_price: price,
+    offered_description: description,
+  });
+  fetchOfferedServices();
+});
+
+async function deleteCategory(categoryId) {
+  await axios.delete(`${API_URL}/categories.php?id=${categoryId}`);
+  fetchCategories();
+}
+
+async function deleteService(serviceId) {
+  await axios.delete(`${API_URL}/services.php?id=${serviceId}`);
+  fetchOfferedServices();
+}
+
+// Load categories and services when the page loads
+window.onload = () => {
+  fetchCategories();
+  fetchOfferedServices();
+};

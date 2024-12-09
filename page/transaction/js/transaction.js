@@ -1,282 +1,203 @@
-// transaction.js
+const API_URL = 'http://localhost/laundry/api'; // Sesuaikan jika Anda menggunakan port lain
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Memuat navbar
-  loadExternalHTML('../../../components/navbar.html', '#navbar')
-    .then(() => {
-      // Setelah navbar dimuat dan skrip dieksekusi, lanjutkan dengan logika lainnya jika diperlukan
-      // Namun, karena skrip dalam navbar.html sudah mengatur tautan, Anda tidak perlu menambahkan ulang logika tersebut di sini
-    })
-    .catch(error => {
-      console.error('Failed to load navbar:', error);
-    });
+let selectedServices = {}; // To store selected services and their quantities
+let userAddress = ''; // To store user input address
 
-  // ... (Sisa kode Anda untuk transaction.js)
-  
-  const serviceItems = document.querySelectorAll('.service-item');
-  const stepItems = document.getElementById('step-items');
-  const itemsList = document.getElementById('items-list');
-  const orderSummary = document.getElementById('order-summary');
-  const proceedOrderBtn = document.getElementById('proceed-order');
-  const locationInput = document.getElementById('location-input');
+// Fetch categories and render them
+async function fetchCategories() {
+  const response = await axios.get(`${API_URL}/categories.php`);
+  const categories = response.data;
+  const categoriesContainer = document.getElementById('categories-container');
 
-  let selectedServices = [];
-  let selectedItems = {};
-  let location = '';
+  categoriesContainer.innerHTML = '';
 
-  // Definisikan data item per layanan
-  const serviceItemsData = {
-    'dry-clean': [
-      { id: 'shirt', name: 'Shirt / T-shirt', price: 25000, image: '../../images/price1.jpg' },
-      { id: 'blazer', name: 'Blazer / Coat', price: 40000, image: '../../images/price4.webp' },
-      { id: 'sherwani', name: 'Sherwani', price: 100000, image: '../../images/price6.jpg' }
-    ],
-    'laundry': [
-      { id: 'jeans', name: 'Jeans', price: 25000, image: '../../images/price9.jpg' },
-      { id: 'cap', name: 'Cap (Casual / Woolen)', price: 20000, image: '../../images/price5.jpg' }
-    ],
-    'steam-iron': [
-      { id: 'curtains', name: 'Curtains', price: 50000, image: '../../images/price10.webp' },
-      { id: 'bedcover', name: 'Bed Cover Double', price: 60000, image: '../../images/price9.jpg' }
-    ],
-    'shoes-clean': [
-      { id: 'shoes', name: 'Shoes Sports', price: 50000, image: '../../images/price2.jpg' }
-    ],
-    'bag-clean': [
-      { id: 'bag', name: 'Bag Cleaning', price: 30000, image: '../../images/price5.jpg' }
-    ],
-    'carpet-clean': [
-      { id: 'carpet', name: 'Carpet Cleaning', price: 80000, image: '../../images/price8.webp' }
-    ]
-  };
-
-  // Handle service selection
-  serviceItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const service = item.getAttribute('data-service');
-      if (selectedServices.includes(service)) {
-        selectedServices = selectedServices.filter(s => s !== service);
-        item.classList.remove('selected');
-      } else {
-        selectedServices.push(service);
-        item.classList.add('selected');
-      }
-
-      if (selectedServices.length > 0) {
-        stepItems.style.display = 'block';
-        generateItems();
-      } else {
-        stepItems.style.display = 'none';
-        itemsList.innerHTML = '';
-        orderSummary.style.display = 'none';
-      }
-    });
+  categories.forEach(category => {
+    categoriesContainer.innerHTML += `
+      <div class="col-md-3 mb-3">
+        <div class="card" data-category-id="${category.category_id}">
+          <img src="${category.service_icon}" class="card-img-top" alt="${category.service_description}" />
+          <div class="card-body">
+            <h5 class="card-title">${category.service_description}</h5>
+          </div>
+        </div>
+      </div>
+    `;
   });
 
-  // Generate items berdasarkan layanan yang dipilih
-  function generateItems() {
-    itemsList.innerHTML = '';
-    selectedItems = {};
-    selectedServices.forEach(service => {
-      serviceItemsData[service].forEach(item => {
-        // Hindari item duplikat jika beberapa layanan menyertakan item yang sama
-        if (!itemsList.querySelector(`[data-item-id="${item.id}"]`)) {
-          const itemCard = document.createElement('div');
-          itemCard.classList.add('item-card');
-          itemCard.setAttribute('data-item-id', item.id);
-          itemCard.innerHTML = `
-            <img src="${item.image}" alt="${item.name}">
-            <h4>${item.name}</h4>
-            <p>Harga: Rp${item.price.toLocaleString()}</p>
-            <div class="quantity-controls">
-              <button class="minus-btn">-</button>
-              <input type="number" min="0" value="0" class="quantity-input">
-              <button class="plus-btn">+</button>
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      const categoryId = e.target.closest('.card').getAttribute('data-category-id');
+      fetchServices(categoryId);
+    });
+  });
+}
+
+// Fetch services based on the selected category and render them
+async function fetchServices(categoryId) {
+  const response = await axios.get(`${API_URL}/services.php?category_id=${categoryId}`);
+  const services = response.data;
+  const servicesContainer = document.getElementById('services-container');
+
+  servicesContainer.innerHTML = '';
+
+  if (services.length === 0) {
+    servicesContainer.innerHTML = '<p>No services available for this category.</p>';
+    return;
+  }
+
+  services.forEach(service => {
+    servicesContainer.innerHTML += `
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <img src="${service.offered_image_url}" class="card-img-top" alt="${service.offered_name}" />
+          <div class="card-body">
+            <h5 class="card-title">${service.offered_name}</h5>
+            <p class="card-text">Price: Rp ${service.offered_price}</p>
+            <p class="card-text">${service.offered_description}</p>
+            <div class="d-flex align-items-center">
+              <button class="btn btn-secondary decrease-btn" data-service-id="${service.offered_id}">-</button>
+              <input type="number" id="quantity-${service.offered_id}" value="1" class="form-control w-25 mx-2" readonly />
+              <button class="btn btn-secondary increase-btn" data-service-id="${service.offered_id}">+</button>
             </div>
-          `;
-          itemsList.appendChild(itemCard);
-        }
-      });
-    });
-
-    // Tambahkan event listener untuk kontrol kuantitas
-    const minusButtons = document.querySelectorAll('.minus-btn');
-    const plusButtons = document.querySelectorAll('.plus-btn');
-    const quantityInputs = document.querySelectorAll('.quantity-input');
-
-    minusButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const input = e.target.parentElement.querySelector('.quantity-input');
-        let value = parseInt(input.value);
-        if (value > 0) {
-          input.value = value - 1;
-          updateSelectedItems(e.target, input);
-        }
-      });
-    });
-
-    plusButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const input = e.target.parentElement.querySelector('.quantity-input');
-        let value = parseInt(input.value);
-        input.value = value + 1;
-        updateSelectedItems(e.target, input);
-      });
-    });
-
-    quantityInputs.forEach(input => {
-      input.addEventListener('change', (e) => {
-        const value = parseInt(e.target.value);
-        if (isNaN(value) || value < 0) {
-          e.target.value = 0;
-        }
-        updateSelectedItems(e.target, e.target);
-      });
-    });
-  }
-
-  // Update selected items berdasarkan kuantitas
-  function updateSelectedItems(button, input) {
-    const itemCard = button.closest('.item-card');
-    const itemId = itemCard.getAttribute('data-item-id');
-    const itemName = itemCard.querySelector('h4').innerText;
-    const itemPriceText = itemCard.querySelector('p').innerText;
-    const itemPrice = parseInt(itemPriceText.replace(/\D/g, ''));
-    const quantity = parseInt(input.value);
-
-    if (quantity > 0) {
-      selectedItems[itemId] = {
-        name: itemName,
-        price: itemPrice,
-        quantity: quantity
-      };
-      itemCard.classList.add('selected');
-    } else {
-      delete selectedItems[itemId];
-      itemCard.classList.remove('selected');
-    }
-
-    if (Object.keys(selectedItems).length > 0) {
-      orderSummary.style.display = 'block';
-      generateOrderSummary();
-    } else {
-      orderSummary.style.display = 'none';
-    }
-  }
-
-  // Generate order summary
-  function generateOrderSummary() {
-    location = locationInput.value.trim();
-    const summaryLocation = document.getElementById('summary-location');
-    const summaryServices = document.getElementById('summary-services');
-    const summaryItems = document.getElementById('summary-items');
-    const summaryTime = document.getElementById('summary-time');
-
-    summaryLocation.textContent = `Location: ${location || 'Not specified'}`;
-    summaryServices.textContent = `Selected Services: ${selectedServices.map(s => getServiceName(s)).join(', ')}`;
-
-    let itemsHTML = '<ul>';
-    let totalTime = 0;
-    for (const key in selectedItems) {
-      const item = selectedItems[key];
-      itemsHTML += `<li>${item.name} x ${item.quantity} - Rp${(item.price * item.quantity).toLocaleString()}</li>`;
-      // Estimasi waktu berdasarkan layanan
-      const service = getServiceByItemId(key);
-      totalTime += getServiceTime(service) * item.quantity;
-    }
-    itemsHTML += '</ul>';
-    summaryItems.innerHTML = `Items Ordered: ${itemsHTML}`;
-    summaryTime.textContent = `Estimated Completion Time: ${totalTime} hours`;
-
-    // Update summary location secara real-time
-    locationInput.addEventListener('input', () => {
-      summaryLocation.textContent = `Location: ${locationInput.value.trim() || 'Not specified'}`;
-    });
-  }
-
-  // Fungsi pembantu
-  function getServiceName(serviceId) {
-    const names = {
-      'dry-clean': 'Dry Cleaning',
-      'laundry': 'Premium Laundry',
-      'steam-iron': 'Steam Ironing',
-      'shoes-clean': 'Shoes Cleaning',
-      'bag-clean': 'Bag Cleaning',
-      'carpet-clean': 'Carpet Cleaning'
-    };
-    return names[serviceId] || serviceId;
-  }
-
-  function getServiceByItemId(itemId) {
-    for (const service in serviceItemsData) {
-      if (serviceItemsData[service].some(item => item.id === itemId)) {
-        return service;
-      }
-    }
-    return null;
-  }
-
-  function getServiceTime(serviceId) {
-    const times = {
-      'dry-clean': 24,
-      'laundry': 12,
-      'steam-iron': 6,
-      'shoes-clean': 24,
-      'bag-clean': 24,
-      'carpet-clean': 48
-    };
-    return times[serviceId] || 24;
-  }
-
-  // Simpan data transaksi saat melanjutkan ke notasi
-  document.getElementById('proceed-to-notation').addEventListener('click', () => {
-    const transactionData = {
-      location: locationInput.value.trim(),
-      selectedServices: selectedServices,
-      selectedItems: selectedItems
-    };
-    
-    // Simpan data ke localStorage
-    localStorage.setItem('transactionData', JSON.stringify(transactionData));
+          </div>
+        </div>
+      </div>
+    `;
   });
+
+  document.querySelectorAll('.increase-btn').forEach(button => {
+    button.addEventListener('click', (e) => {
+      increaseQuantity(e.target.dataset.serviceId);
+    });
+  });
+
+  document.querySelectorAll('.decrease-btn').forEach(button => {
+    button.addEventListener('click', (e) => {
+      decreaseQuantity(e.target.dataset.serviceId);
+    });
+  });
+}
+
+// Increase quantity
+function increaseQuantity(serviceId) {
+  const quantityInput = document.getElementById(`quantity-${serviceId}`);
+  let quantity = parseInt(quantityInput.value);
+  quantityInput.value = quantity + 1;
+  updateOrderSummary(serviceId, quantityInput.value);
+}
+
+// Decrease quantity
+function decreaseQuantity(serviceId) {
+  const quantityInput = document.getElementById(`quantity-${serviceId}`);
+  let quantity = parseInt(quantityInput.value);
+  if (quantity > 1) {
+    quantityInput.value = quantity - 1;
+    updateOrderSummary(serviceId, quantityInput.value);
+  }
+}
+
+// Update the order summary
+function updateOrderSummary(serviceId, quantity) {
+  const serviceDetails = document.querySelector(`#quantity-${serviceId}`).closest('.card-body').querySelector('.card-title').innerText;
+  const servicePrice = parseFloat(document.querySelector(`#quantity-${serviceId}`).closest('.card-body').querySelector('.card-text').innerText.replace('Price: Rp ', '').trim());
+  const totalServicePrice = servicePrice * quantity;
+
+  if (quantity > 0) {
+    selectedServices[serviceId] = { serviceDetails, quantity, totalServicePrice, servicePrice };
+  } else {
+    delete selectedServices[serviceId];
+  }
+
+  const orderSummary = document.getElementById('order-summary');
+  const orderDetails = document.getElementById('order-details');
+
+  let totalPrice = 0;
+  orderDetails.innerHTML = '';
+
+  for (const id in selectedServices) {
+    const { serviceDetails, quantity, totalServicePrice } = selectedServices[id];
+    totalPrice += totalServicePrice;
+
+    orderDetails.innerHTML += `
+      <div class="d-flex justify-content-between align-items-center mb-2" data-service-id="${id}">
+        <button class="btn btn-danger btn-sm remove-btn">-</button>
+        <span class="ms-2">${serviceDetails} x ${quantity} ........ Rp ${totalServicePrice.toFixed(2)}</span>
+      </div>
+    `;
+  }
+
+  orderDetails.innerHTML += `
+    <div class="d-flex justify-content-between mt-3">
+      <strong>Total Price:</strong>
+      <span>Rp ${totalPrice.toFixed(2)}</span>
+    </div>
+  `;
+
+  if (Object.keys(selectedServices).length > 0) {
+    orderSummary.style.display = 'block';
+  } else {
+    orderSummary.style.display = 'none';
+  }
+
+  const addressSummary = document.getElementById('address-summary');
+  addressSummary.innerHTML = `<strong>Address:</strong> ${userAddress || 'Not provided'}`;
+}
+
+// Event delegation for removing services
+document.getElementById('order-details').addEventListener('click', (e) => {
+  if (e.target.classList.contains('remove-btn')) {
+    const serviceId = e.target.closest('div[data-service-id]').getAttribute('data-service-id');
+    delete selectedServices[serviceId];
+    updateOrderSummary(serviceId, 0);
+  }
 });
 
-// Fungsi untuk memuat HTML eksternal dan menjalankan skrip di dalamnya
-function loadExternalHTML(filePath, targetSelector) {
-  return fetch(filePath)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Error loading file: ${filePath}`);
-      }
-      return response.text();
-    })
-    .then(data => {
-      const target = document.querySelector(targetSelector);
-      target.innerHTML = data;
+document.getElementById('address').addEventListener('input', (e) => {
+  userAddress = e.target.value;
+  updateOrderSummary();
+});
 
-      // Cari semua tag <script> dalam data yang dimuat
-      const scripts = target.querySelectorAll('script');
-      scripts.forEach(script => {
-        const newScript = document.createElement('script');
+document.getElementById('finalize-order').addEventListener('click', async () => {
+  if (!userAddress.trim()) {
+    alert('Please enter your address.');
+    return;
+  }
 
-        // Jika skrip memiliki atribut src, salin atribut tersebut
-        if (script.src) {
-          newScript.src = script.src;
-          newScript.async = false; // Pastikan skrip dijalankan dalam urutan
-        } else {
-          // Jika skrip inline, salin kontennya
-          newScript.textContent = script.textContent;
-        }
+  if (Object.keys(selectedServices).length === 0) {
+    alert('Please select at least one service.');
+    return;
+  }
 
-        // Tambahkan skrip baru ke DOM untuk mengeksekusinya
-        document.body.appendChild(newScript);
-
-        // Opsional: Hapus skrip setelah dieksekusinya untuk kebersihan DOM
-        script.remove();
-      });
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      document.querySelector(targetSelector).innerHTML = `<p>Failed to load content from ${filePath}</p>`;
+  try {
+    // Kirim data transaksi
+    const transactionResponse = await axios.post(`${API_URL}/transaction.php`, {
+      user_id: 1, // ID pengguna (sesuaikan dengan ID yang login)
+      laundry_location: userAddress
     });
-}
+
+    const transactionId = transactionResponse.data.transaction_id;
+
+    // Menyimpan transactionId ke localStorage
+    localStorage.setItem('transactionId', transactionId);
+
+    // Kirim detail transaksi untuk setiap layanan
+    for (const serviceId in selectedServices) {
+      const service = selectedServices[serviceId];
+      await axios.post(`${API_URL}/transaction_detail.php`, {
+        transaction_id: transactionId,
+        offered_id: serviceId,
+        value_count: service.quantity,
+        sum_offered_price: service.totalServicePrice
+      });
+    }
+
+    alert('Transaction completed successfully!');
+    window.location.href = '../invoice/invoice.html'; // Arahkan ke halaman invoice
+  } catch (error) {
+    alert('Error: ' + error.response.data.message);
+  }
+});
+
+window.onload = () => {
+  fetchCategories();
+};
