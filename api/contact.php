@@ -9,7 +9,7 @@ header("Content-Type: application/json; charset=UTF-8");
 
 // Handle OPTIONS request method for CORS preflight
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+    header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
     header("Access-Control-Allow-Headers: Content-Type, Authorization");
     exit(0);
 }
@@ -19,36 +19,22 @@ $controller = new ContactController();
 
 // Determine the HTTP method
 $method = $_SERVER['REQUEST_METHOD'];
-// Get the ID from the URL if present
+
+// Determine the 'action' parameter
+$action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : 'read');
+
+// Get the ID from the URL if present (not needed as only one contact entry)
 $id = isset($_GET['id']) ? intval($_GET['id']) : null;
 
-switch($method){
-    case 'GET':
-        if($id){
-            $controller->getById($id);
-        } else {
-            $controller->getAll();
-        }
+switch($action){
+    case 'read':
+        $controller->getAll(); // getAll should return the single contact entry
         break;
-    case 'POST':
-        $controller->create();
-        break;
-    case 'PUT':
-        if($id){
-            $controller->update($id);
-        } else {
-            echo json_encode(["message" => "ID is required for update."]);
-        }
-        break;
-    case 'DELETE':
-        if($id){
-            $controller->delete($id);
-        } else {
-            echo json_encode(["message" => "ID is required for deletion."]);
-        }
+    case 'update':
+        $controller->update();
         break;
     default:
-        echo json_encode(["message" => "Method not allowed."]);
+        echo json_encode(["message" => "Action not allowed."]);
         break;
 }
 ?>
