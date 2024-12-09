@@ -37,35 +37,34 @@
     </header>
     
     <section id="contact-management" class="admin-section">
-      <h2>Manage Contact Information</h2>
-      <form id="contact-form">
-        <div class="form-group">
-          <label for="title_contact">Contact Title:</label>
-          <input type="text" id="title_contact" name="title_contact" required>
-        </div>
-        <div class="form-group">
-          <label for="image_url_contact">Contact Image:</label>
-          <input type="file" id="image_url_contact" name="image_url_contact" accept="image/*">
-        </div>
-        <button type="submit" class="btn btn-primary">Add Contact</button>
-      </form>
+      <h2>Contact Information</h2>
       
-      <hr>
+      <div id="contact-display">
+        <p><strong>Title:</strong> <span id="display-title_contact">Loading...</span></p>
+        <p><strong>Image:</strong> <br><img id="display-image_url_contact" src="" alt="Contact Image" style="max-width:200px; max-height:200px;"></p>
+        <button class="btn btn-primary" id="edit-contact-btn"><i class="fas fa-edit"></i> Edit Contact</button>
+      </div>
       
-      <h2>Existing Contact Entries</h2>
-      <table id="contact-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Image</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Contact entries will be populated here via JavaScript -->
-        </tbody>
-      </table>
+      <!-- Edit Modal -->
+      <div id="edit-modal" class="modal">
+        <div class="modal-content">
+          <span class="close-btn">&times;</span>
+          <h2>Edit Contact</h2>
+          <form id="edit-contact-form">
+            <div class="form-group">
+              <label for="edit_title_contact">Contact Title:</label>
+              <input type="text" id="edit_title_contact" name="title_contact" required>
+            </div>
+            <div class="form-group">
+              <label for="edit_image_url_contact">Contact Image:</label>
+              <input type="file" id="edit_image_url_contact" name="image_url_contact" accept="image/*">
+              <small>If you want to change the image, upload a new one.</small>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Contact</button>
+          </form>
+        </div>
+      </div>
+      
     </section>
   </div>
   

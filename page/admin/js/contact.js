@@ -1,23 +1,48 @@
 // contact.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetchContacts();
+    fetchContact();
 
-    const contactForm = document.getElementById('contact-form');
-    contactForm.addEventListener('submit', (e) => {
+    const editContactBtn = document.getElementById('edit-contact-btn');
+    const editModal = document.getElementById('edit-modal');
+    const closeBtn = editModal.querySelector('.close-btn');
+    const editContactForm = document.getElementById('edit-contact-form');
+
+    // Open the edit modal
+    editContactBtn.addEventListener('click', () => {
+        // Populate the form with existing data
+        const title = document.getElementById('display-title_contact').innerText;
+        document.getElementById('edit_title_contact').value = title;
+        editModal.style.display = 'block';
+    });
+
+    // Close the edit modal
+    closeBtn.addEventListener('click', () => {
+        editModal.style.display = 'none';
+    });
+
+    // Close the modal when clicking outside the modal content
+    window.addEventListener('click', (event) => {
+        if (event.target == editModal) {
+            editModal.style.display = 'none';
+        }
+    });
+
+    // Handle edit form submission
+    editContactForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const title_contact = document.getElementById('title_contact').value;
-        const image_url_contact = document.getElementById('image_url_contact').files[0];
+        const title_contact = document.getElementById('edit_title_contact').value;
+        const image_url_contact = document.getElementById('edit_image_url_contact').files[0];
 
         const formData = new FormData();
-        formData.append('action', 'create');
+        formData.append('action', 'update');
         formData.append('title_contact', title_contact);
         if (image_url_contact) {
             formData.append('image_url_contact', image_url_contact);
         }
 
-        fetch('api/contact.php', {
+        fetch('http://localhost:8000/api/contact.php', {
             method: 'POST',
             body: formData
         })
@@ -25,58 +50,33 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             alert(data.message);
             if (data.success) {
-                contactForm.reset();
-                fetchContacts();
+                editModal.style.display = 'none';
+                fetchContact();
             }
         })
         .catch(error => console.error('Error:', error));
     });
 
-    // Fetch and display contact entries
-    function fetchContacts() {
-        fetch('api/contact.php?action=read')
+    // Fetch and display contact entry
+    function fetchContact() {
+        fetch('http://localhost:8000/api/contact.php?action=read')
             .then(response => response.json())
             .then(data => {
-                const tbody = document.querySelector('#contact-table tbody');
-                tbody.innerHTML = '';
-                data.forEach(contact => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${contact.contact_id}</td>
-                        <td>${contact.title_contact}</td>
-                        <td>${contact.image_url_contact ? `<img src="${contact.image_url_contact}" alt="Contact Image">` : 'N/A'}</td>
-                        <td>
-                            <button class="action-btn edit-btn" onclick="editContact(${contact.contact_id})">Edit</button>
-                            <button class="action-btn delete-btn" onclick="deleteContact(${contact.contact_id})">Delete</button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            })
-            .catch(error => console.error('Error:', error));
-    }
-
-    // Delete contact entry
-    window.deleteContact = function(contact_id) {
-        if (confirm('Are you sure you want to delete this contact entry?')) {
-            const formData = new FormData();
-            formData.append('action', 'delete');
-            formData.append('contact_id', contact_id);
-
-            fetch('api/contact.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-                if (data.success) {
-                    fetchContacts();
+                if (data.length > 0) {
+                    const contact = data[0]; // Assuming only one contact entry
+                    document.getElementById('display-title_contact').innerText = contact.title_contact;
+                    if (contact.image_url_contact) {
+                        document.getElementById('display-image_url_contact').src = contact.image_url_contact;
+                    } else {
+                        document.getElementById('display-image_url_contact').src = '';
+                        document.getElementById('display-image_url_contact').alt = 'No Image';
+                    }
+                } else {
+                    document.getElementById('display-title_contact').innerText = 'No Contact Information Available';
+                    document.getElementById('display-image_url_contact').src = '';
+                    document.getElementById('display-image_url_contact').alt = 'No Image';
                 }
             })
             .catch(error => console.error('Error:', error));
-        }
     }
-
-    // Edit contact entry functionality can be implemented similarly
 });
