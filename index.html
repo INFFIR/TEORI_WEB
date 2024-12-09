@@ -1,3 +1,14 @@
+<?php
+session_start();  // Mulai session
+
+// Periksa apakah pengguna sudah login
+if (!isset($_SESSION['user_id'])) {
+    // Jika belum login, arahkan ke halaman login
+    header("Location: /page/signin/signin.html");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,13 +28,19 @@
 <body id="landing-page">
     
     <!-- Memuat Navbar -->
-    <div id="navbar"></div>
+    <div id="navbar">
+        <!-- Menampilkan nama pengguna yang login -->
+        <div class="navbar-content">
+            <span>Welcome, <?php echo $_SESSION['username']; ?>!</span>
+            <a href="signout.php" class="btn btn-signout">Sign Out</a>
+        </div>
+    </div>
 
-     <!-- components/showcase.html -->
+    <!-- components/showcase.html -->
     <section class="showcase-area" id="home-home">
         <div class="showcase-container">
             <h1 class="main-title">Discover The Closest Washateria!</h1>
-            <a href="/page/signup/signup.html" class="btn btn-primary">Sign Up</a> <!-- Tambahkan ini -->
+            <a href="page/signup/signup.html" class="btn btn-primary">Sign Up</a>
             <a href="#order-home" class="btn btn-primary">GET STARTED</a>
         </div>
     </section>

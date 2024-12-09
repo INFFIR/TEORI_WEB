@@ -23,7 +23,8 @@
 
     <!-- Profil Pengguna -->
     <div class="profile-container">
-      <img src="/images/<?php echo $_SESSION['user']['profile_image']; ?>" alt="Profile" class="profile-image">
+      <!-- Pastikan gambar profil menggunakan session untuk menampilkan gambar pengguna yang login -->
+      <img src="images/<?php echo $_SESSION['user']['profile_image']; ?>" alt="Profile" class="profile-image">
       <span><?php echo $_SESSION['user']['name']; ?></span>
     </div>
   </div>
