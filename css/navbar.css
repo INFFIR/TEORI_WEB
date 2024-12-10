@@ -76,6 +76,8 @@
 
 /* Responsive Styles for Navbar */
 @media (max-width: 768px) {
+    
+
     .navbar {
         opacity: 0.95;
     }
@@ -161,3 +163,16 @@
         transform: rotate(-45deg);
     }
 }
+
+.profile-container {
+    display: flex;
+    align-items: center;
+}
+
+.profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
