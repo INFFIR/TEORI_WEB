@@ -9,6 +9,7 @@ async function loadComponent(selector, file) {
         if (!response.ok) throw new Error(`Gagal memuat ${file}: ${response.statusText}`);
         const content = await response.text();
         document.querySelector(selector).insertAdjacentHTML('beforeend', content);
+        console.log(`Komponen ${file} berhasil dimuat.`);
     } catch (error) {
         console.error(`Error loading component ${file}:`, error);
     }
@@ -74,14 +75,7 @@ function closeMobileMenu() {
  */
 document.addEventListener('DOMContentLoaded', async () => {
     const pageId = document.body.id;
-    try {
-        const response = await fetch('http://localhost:8000/api/about.php', {
-            method: 'GET'
-        });    } catch (error) {
-            console.error('Error fetching about sections:', error);
-            const aboutSections = document.getElementById('about-sections');
-            aboutSections.innerHTML = '<p>Error loading about sections. Please try again later.</p>';
-        }
+
     // Daftar komponen yang akan dimuat
     const components = [
         './components/navbar.html',
@@ -114,17 +108,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Menangani perubahan hash di URL
     handleHashChange();
+
+    // Panggil fungsi untuk memuat layanan setelah 'services.html' dimuat
+    await loadServices();
+
+    // Panggil fungsi untuk memuat dynamic about sections
+    await loadDynamicAboutSections();
 });
 
-
-
-// --- Start of Dynamic About Section Code ---
-
 /*
- * Fungsi untuk mengambil data About dari API dan menampilkannya di halaman.
  * ----------------------------------------------------------------------------------------------------
  * ABOUT
  * ----------------------------------------------------------------------------------------------------
+ */
+
+/**
+ * Fungsi untuk mengambil data About dari API dan menampilkannya di halaman.
  */
 async function loadDynamicAboutSections() {
     try {
@@ -202,17 +201,181 @@ function escapeHtml(text) {
     };
     return text.replace(/[&<>"'`]/g, function(m) { return map[m]; });
 }
-
-// Call the function after all components are loaded
-document.addEventListener('DOMContentLoaded', () => {
-    loadDynamicAboutSections();
-});
 /*
  * ----------------------------------------------------------------------------------------------------
  * ABOUT
  * ----------------------------------------------------------------------------------------------------
-*/
+ */
+/*
+ * ----------------------------------------------------------------------------------------------------
+ * OUR SERVICE
+ * ----------------------------------------------------------------------------------------------------
+ */
+
+/**
+ * Fungsi untuk mencegah serangan XSS dengan meng-escape karakter HTML.
+ * @param {string} text - Teks yang akan di-escape.
+ * @returns {string} - Teks yang sudah di-escape.
+ */
+function escapeHtml(text) {
+    if (typeof text !== 'string') {
+        return '';
+    }
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;',
+        '`': '&#x60;'
+    };
+    return text.replace(/[&<>"'`]/g, function(m) { return map[m]; });
+}
+
+/**
+ * Fungsi untuk membuat elemen layanan berdasarkan data dari API.
+ * @param {Object} service - Objek layanan dari API.
+ * @returns {HTMLElement} - Elemen HTML yang mewakili layanan.
+ */
+function createServiceElement(service) {
+    const serviceType = document.createElement('div');
+    serviceType.className = 'service-type';
+
+    const imgContainer = document.createElement('div');
+    imgContainer.className = 'img-container';
+
+    const img = document.createElement('img');
+    // Gunakan gambar default jika category_image tidak tersedia
+    img.src = service.category_image ? service.category_image : 'images/default-service.jpg';
+    img.alt = escapeHtml(service.title ? service.title : 'Untitled Service');
+
+    img.onerror = () => {
+        console.error(`Gagal memuat gambar: ${service.category_image}`);
+        img.src = 'images/default-service.jpg'; // Pastikan gambar default ada
+    };
+
+    const imgContent = document.createElement('div');
+    imgContent.className = 'img-content';
+
+    const h3 = document.createElement('h3');
+    h3.textContent = service.title ? service.title : 'Untitled Service';
+
+    imgContent.appendChild(h3);
+    imgContainer.appendChild(img);
+    imgContainer.appendChild(imgContent);
+    serviceType.appendChild(imgContainer);
 
 
+    return serviceType;
+}
 
-// --- End of Dynamic About Section Code ---
+/**
+ * Fungsi untuk menampilkan pesan error di UI.
+ * @param {string} message - Pesan error yang akan ditampilkan.
+ */
+function displayError(message) {
+    const container = document.getElementById('service-container');
+    if (!container) {
+        console.error('Elemen dengan id "service-container" tidak ditemukan.');
+        return;
+    }
+
+    let errorMsg = container.querySelector('.error-message');
+    if (!errorMsg) {
+        errorMsg = document.createElement('p');
+        errorMsg.className = 'error-message';
+        container.appendChild(errorMsg);
+    }
+    errorMsg.textContent = message;
+}
+
+/**
+ * Fungsi utama untuk memuat dan menampilkan layanan dari API.
+ */
+async function loadServices() {
+    console.log('Fungsi loadServices() dipanggil.');
+
+    // URL API Anda
+    const apiUrl = 'http://localhost:8000/api/service_category.php';
+
+    // Ambil elemen kontainer dan indikator loading
+    const container = document.getElementById('service-container');
+    const loadingIndicator = document.getElementById('loading');
+
+    if (!container) {
+        console.error('Elemen dengan id "service-container" tidak ditemukan.');
+        return;
+    }
+
+    try {
+        // Tampilkan indikator loading
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'block';
+            console.log('Indikator loading ditampilkan.');
+        }
+
+        console.log('Mengambil data layanan dari API...');
+
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        console.log('Data yang diterima dari API:', data);
+
+        // Sembunyikan indikator loading
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'none';
+            console.log('Indikator loading disembunyikan.');
+        }
+
+        // Periksa apakah respons berhasil dan data tersedia
+        if (data.success && Array.isArray(data.data)) {
+            const services = data.data;
+
+            // Jika tidak ada layanan, tampilkan pesan
+            if (services.length === 0) {
+                console.log('Tidak ada layanan yang tersedia.');
+                displayError('Tidak ada layanan yang tersedia.');
+                return;
+            }
+
+            // Buat fragmen dokumen untuk meningkatkan performa
+            const fragment = document.createDocumentFragment();
+
+            // Iterasi melalui setiap layanan dan buat elemen HTML
+            services.forEach((service, index) => {
+                // Tidak perlu mengecek apakah category_image dan title ada
+                // Karena kita sudah menangani nilai default di createServiceElement
+                console.log(`Membuat elemen layanan untuk kategori ke-${index + 1}:`, service);
+                const serviceElement = createServiceElement(service);
+                fragment.appendChild(serviceElement);
+            });
+
+            // Tambahkan fragmen ke kontainer
+            container.appendChild(fragment);
+            console.log('Data layanan berhasil ditampilkan.');
+        } else {
+            console.error('Gagal memuat data layanan:', data.message);
+            displayError(data.message || 'Gagal memuat data layanan.');
+        }
+    } catch (error) {
+        // Sembunyikan indikator loading jika ada error
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'none';
+        }
+        console.error('Terjadi kesalahan saat mengambil data:', error);
+        displayError('Terjadi kesalahan saat memuat data layanan.');
+    }
+}
+
+// Panggil fungsi loadServices setelah DOM telah dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    loadServices();
+});
+/*
+ * ----------------------------------------------------------------------------------------------------
+ * OUR SERVICE
+ * ----------------------------------------------------------------------------------------------------
+ */
