@@ -112,6 +112,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Panggil fungsi untuk memuat layanan setelah 'services.html' dimuat
     await loadServices();
 
+    await loadPricing();
+
     // Panggil fungsi untuk memuat dynamic about sections
     await loadDynamicAboutSections();
 });
@@ -379,3 +381,175 @@ document.addEventListener('DOMContentLoaded', () => {
  * OUR SERVICE
  * ----------------------------------------------------------------------------------------------------
  */
+/*
+ * ----------------------------------------------------------------------------------------------------
+ * PRICING LIST
+ * ----------------------------------------------------------------------------------------------------
+ */
+
+/**
+ * Fungsi untuk mencegah serangan XSS dengan meng-escape karakter HTML.
+ * @param {string} text - Teks yang akan di-escape.
+ * @returns {string} - Teks yang sudah di-escape.
+ */
+function escapeHtml(text) {
+    if (typeof text !== 'string') {
+        return '';
+    }
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;',
+        '`': '&#x60;'
+    };
+    return text.replace(/[&<>"'`]/g, function(m) { return map[m]; });
+}
+
+/**
+ * Fungsi untuk membuat elemen pricing berdasarkan data dari API.
+ * @param {Object} pricing - Objek pricing dari API.
+ * @returns {HTMLElement} - Elemen HTML yang mewakili pricing.
+ */
+function createPricingElement(pricing) {
+    const pricingItem = document.createElement('div');
+    pricingItem.className = 'pricing-item';
+
+    const pricingImage = document.createElement('div');
+    pricingImage.className = 'pricing-image';
+
+    const img = document.createElement('img');
+    // Gunakan gambar default jika offered_image_url tidak tersedia
+    img.src = pricing.offered_image_url ? pricing.offered_image_url : 'images/default-pricing.jpg';
+    img.alt = escapeHtml(pricing.offered_name ? pricing.offered_name : 'Untitled Pricing');
+
+    img.onerror = () => {
+        console.error(`Gagal memuat gambar: ${pricing.offered_image_url}`);
+        img.src = 'images/default-pricing.jpg'; // Pastikan gambar default ada
+    };
+
+    pricingImage.appendChild(img);
+
+    const pricingDescription = document.createElement('div');
+    pricingDescription.className = 'pricing-description';
+
+    const pricingTitle = document.createElement('h3');
+    pricingTitle.className = 'pricing-title';
+    pricingTitle.textContent = pricing.offered_name ? pricing.offered_name : 'Untitled Pricing';
+
+    const pricingText = document.createElement('p');
+    pricingText.textContent = pricing.offered_description ? pricing.offered_description : 'No description available.';
+
+    const pricingPrice = document.createElement('p');
+    pricingPrice.className = 'item-price';
+    pricingPrice.textContent = pricing.offered_price ? `Harga: Rp${pricing.offered_price}` : 'Harga: Not Available';
+
+    pricingDescription.appendChild(pricingTitle);
+    pricingDescription.appendChild(pricingText);
+    pricingDescription.appendChild(pricingPrice);
+
+    pricingItem.appendChild(pricingImage);
+    pricingItem.appendChild(pricingDescription);
+
+    return pricingItem;
+}
+
+/**
+ * Fungsi untuk menampilkan pesan error di UI Pricing List.
+ * @param {string} message - Pesan error yang akan ditampilkan.
+ */
+function displayPricingError(message) {
+    const container = document.getElementById('pricing-container');
+    if (!container) {
+        console.error('Elemen dengan id "pricing-container" tidak ditemukan.');
+        return;
+    }
+
+    let errorMsg = container.querySelector('.pricing-error-message');
+    if (!errorMsg) {
+        errorMsg = document.createElement('p');
+        errorMsg.className = 'pricing-error-message';
+        container.appendChild(errorMsg);
+    }
+    errorMsg.textContent = message;
+}
+
+/**
+ * Fungsi utama untuk memuat dan menampilkan daftar harga dari API.
+ */
+async function loadPricing() {
+    console.log('Fungsi loadPricing() dipanggil.');
+
+    // URL API Anda untuk pricing
+    const apiUrl = 'http://localhost:8000/api/service_offered.php';
+
+    // Ambil elemen kontainer dan indikator loading
+    const container = document.getElementById('pricing-container');
+    const loadingIndicator = document.getElementById('pricing-loading');
+
+    if (!container) {
+        console.error('Elemen dengan id "pricing-container" tidak ditemukan.');
+        return;
+    }
+
+    try {
+        // Tampilkan indikator loading
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'block';
+            console.log('Indikator loading untuk pricing ditampilkan.');
+        }
+
+        console.log('Mengambil data pricing dari API...');
+
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        console.log('Data yang diterima dari API:', data);
+
+        // Sembunyikan indikator loading
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'none';
+            console.log('Indikator loading untuk pricing disembunyikan.');
+        }
+
+        // Periksa apakah respons berhasil dan data tersedia
+        if (data.success && Array.isArray(data.data)) {
+            const pricings = data.data;
+
+            // Jika tidak ada pricing, tampilkan pesan
+            if (pricings.length === 0) {
+                console.log('Tidak ada daftar harga yang tersedia.');
+                displayPricingError('Tidak ada daftar harga yang tersedia.');
+                return;
+            }
+
+            // Buat fragmen dokumen untuk meningkatkan performa
+            const fragment = document.createDocumentFragment();
+
+            // Iterasi melalui setiap pricing dan buat elemen HTML
+            pricings.forEach((pricing, index) => {
+                console.log(`Membuat elemen pricing untuk item ke-${index + 1}:`, pricing);
+                const pricingElement = createPricingElement(pricing);
+                fragment.appendChild(pricingElement);
+            });
+
+            // Tambahkan fragmen ke kontainer
+            container.appendChild(fragment);
+            console.log('Data daftar harga berhasil ditampilkan.');
+        } else {
+            console.error('Gagal memuat data pricing:', data.message);
+            displayPricingError(data.message || 'Gagal memuat data daftar harga.');
+        }
+    } catch (error) {
+        // Sembunyikan indikator loading jika ada error
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'none';
+        }
+        console.error('Terjadi kesalahan saat mengambil data pricing:', error);
+        displayPricingError('Terjadi kesalahan saat memuat data daftar harga.');
+    }
+}
