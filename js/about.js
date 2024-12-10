@@ -116,6 +116,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Panggil fungsi untuk memuat dynamic about sections
     await loadDynamicAboutSections();
+
+    await loadOrderSteps();
 });
 
 /*
@@ -553,3 +555,204 @@ async function loadPricing() {
         displayPricingError('Terjadi kesalahan saat memuat data daftar harga.');
     }
 }
+/*
+ * ----------------------------------------------------------------------------------------------------
+ * PRICING LIST
+ * ----------------------------------------------------------------------------------------------------
+ */
+/*
+ * ----------------------------------------------------------------------------------------------------
+ * STEP ORDER
+ * ----------------------------------------------------------------------------------------------------
+ */
+/**
+ * Fungsi untuk mencegah serangan XSS dengan meng-escape karakter HTML.
+ * @param {string} text - Teks yang akan di-escape.
+ * @returns {string} - Teks yang sudah di-escape.
+ */
+function escapeHtml(text) {
+    if (typeof text !== 'string') {
+        return '';
+    }
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;',
+        '`': '&#x60;'
+    };
+    return text.replace(/[&<>"'`]/g, function(m) { return map[m]; });
+}
+
+/**
+ * Fungsi untuk mencegah serangan XSS dengan meng-escape karakter HTML.
+ * @param {string} text - Teks yang akan di-escape.
+ * @returns {string} - Teks yang sudah di-escape.
+ */
+function escapeHtml(text) {
+    if (typeof text !== 'string') {
+        return '';
+    }
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;',
+        '`': '&#x60;'
+    };
+    return text.replace(/[&<>"'`]/g, function(m) { return map[m]; });
+}
+
+/**
+ * Fungsi untuk membuat elemen langkah (step) berdasarkan data dari API.
+ * @param {Object} step - Objek langkah dari API.
+ * @returns {HTMLElement} - Elemen HTML yang mewakili langkah.
+ */
+function createStepElement(step) {
+    const stepDiv = document.createElement('div');
+    stepDiv.className = 'step';
+
+    // Cek apakah step.step_icon adalah kelas Font Awesome atau URL gambar
+    if (typeof step.step_icon === 'string' && step.step_icon.startsWith('fa-')) {
+        // Membuat ikon langkah menggunakan Font Awesome
+        const iconElement = document.createElement('i');
+        // Tambahkan 'fa-solid' jika tidak ada kelas style lain seperti 'fa-regular' atau 'fa-brands'
+        let faClasses = step.step_icon.trim();
+
+        // Cek apakah step.step_icon sudah mengandung style kelas Font Awesome
+        if (!faClasses.includes('fa-solid') && !faClasses.includes('fa-regular') && !faClasses.includes('fa-brands')) {
+            faClasses = `fa-solid ${faClasses}`;
+        }
+
+        iconElement.className = `${faClasses} step-icon`;
+        stepDiv.appendChild(iconElement);
+    } else if (typeof step.step_icon === 'string' && step.step_icon.trim() !== '') {
+        // Membuat ikon langkah menggunakan gambar
+        const iconImg = document.createElement('img');
+        iconImg.src = step.step_icon;
+        iconImg.alt = escapeHtml(step.step_title);
+        iconImg.className = 'step-icon-img';
+
+        // Tambahkan penanganan error untuk gambar
+        iconImg.onerror = () => {
+            console.error(`Gagal memuat gambar: ${step.step_icon}`);
+            // Ganti gambar dengan ikon tanda tanya Font Awesome
+            const fallbackIcon = document.createElement('i');
+            fallbackIcon.className = 'fa-solid fa-question-circle step-icon';
+            stepDiv.replaceChild(fallbackIcon, iconImg);
+        };
+
+        stepDiv.appendChild(iconImg);
+    } else {
+        // Jika step_icon tidak valid atau null, gunakan ikon tanda tanya Font Awesome
+        const defaultIcon = document.createElement('i');
+        defaultIcon.className = 'fa-solid fa-question-circle step-icon';
+        stepDiv.appendChild(defaultIcon);
+    }
+
+    // Judul langkah
+    const title = document.createElement('h3');
+    title.textContent = escapeHtml(step.step_title);
+    stepDiv.appendChild(title);
+
+    // Deskripsi langkah
+    const description = document.createElement('p');
+    description.textContent = escapeHtml(step.step_description);
+    stepDiv.appendChild(description);
+
+    return stepDiv;
+}
+
+/**
+ * Fungsi untuk menampilkan pesan error di UI Order Steps.
+ * @param {string} message - Pesan error yang akan ditampilkan.
+ */
+function displayOrderError(message) {
+    const container = document.getElementById('order-steps');
+    if (!container) {
+        console.error('Elemen dengan id "order-steps" tidak ditemukan.');
+        return;
+    }
+
+    let errorMsg = container.querySelector('.order-error-message');
+    if (!errorMsg) {
+        errorMsg = document.createElement('p');
+        errorMsg.className = 'order-error-message';
+        container.appendChild(errorMsg);
+    }
+    errorMsg.textContent = message;
+}
+
+/**
+ * Fungsi utama untuk memuat dan menampilkan langkah-langkah dari API.
+ */
+async function loadOrderSteps() {
+    console.log('Fungsi loadOrderSteps() dipanggil.');
+
+    // URL API Anda untuk langkah-langkah
+    const apiUrl = 'http://localhost:8000/api/step_order.php';
+
+    // Ambil elemen kontainer
+    const container = document.getElementById('order-steps');
+
+    if (!container) {
+        console.error('Elemen dengan id "order-steps" tidak ditemukan.');
+        return;
+    }
+
+    try {
+        console.log('Mengambil data langkah dari API...');
+
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        console.log('Data yang diterima dari API:', data);
+
+        // Periksa apakah respons berhasil dan data tersedia
+        if (data.success && Array.isArray(data.data)) {
+            const steps = data.data;
+
+            // Jika tidak ada langkah, tampilkan pesan
+            if (steps.length === 0) {
+                console.log('Tidak ada langkah yang tersedia.');
+                displayOrderError('Tidak ada langkah yang tersedia.');
+                return;
+            }
+
+            // Buat fragmen dokumen untuk meningkatkan performa
+            const fragment = document.createDocumentFragment();
+
+            // Iterasi melalui setiap langkah dan buat elemen HTML
+            steps.forEach((step, index) => {
+                console.log(`Membuat elemen langkah untuk item ke-${index + 1}:`, step);
+                const stepElement = createStepElement(step);
+                fragment.appendChild(stepElement);
+            });
+
+            // Tambahkan fragmen ke kontainer
+            container.appendChild(fragment);
+            console.log('Data langkah berhasil ditampilkan.');
+        } else {
+            console.error('Gagal memuat data langkah:', data.message);
+            displayOrderError(data.message || 'Gagal memuat data langkah.');
+        }
+    } catch (error) {
+        console.error('Terjadi kesalahan saat mengambil data langkah:', error);
+        displayOrderError('Terjadi kesalahan saat memuat data langkah.');
+    }
+}
+
+// Panggil fungsi loadOrderSteps setelah halaman dimuat
+document.addEventListener('DOMContentLoaded', loadOrderSteps);
+
+
+/*
+ * ----------------------------------------------------------------------------------------------------
+ * STEP ORDER
+ * ----------------------------------------------------------------------------------------------------
+ */
