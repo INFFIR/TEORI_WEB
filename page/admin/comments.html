@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin Dashboard - Soapy Suds</title>
+  <title>Komentar - Soapy Suds Admin</title>
   
   <!-- Common CSS -->
   <link rel="stylesheet" href="css/sidebar.css">
-  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/comments.css">
   
   <!-- Font Awesome for Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
   
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
@@ -38,17 +38,32 @@
   <!-- Main Content -->
   <div class="main-content">
     <header>
-      <h1>Admin Dashboard</h1>
+      <h1>Daftar Komentar</h1>
     </header>
     
-    <section id="dashboard-overview" class="admin-section">
-      <p>Welcome to the Soapy Suds Admin Dashboard!</p>
-      <!-- Add dashboard widgets or summaries here -->
+    <section class="admin-section">
+      <table id="comments-table">
+        <thead>
+          <tr>
+            <th>ID Komentar</th>
+            <th>User ID</th>
+            <th>Offered ID</th>
+            <th>Bintang</th>
+            <th>Komentar</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Komentar akan diisi via JavaScript -->
+        </tbody>
+      </table>
     </section>
   </div>
   
   <!-- Common JS -->
   <script src="js/sidebar.js"></script>
-  <script src="js/admin.js"></script>
+  
+  <!-- Page Specific JS -->
+  <script src="js/comments.js"></script>
 </body>
 </html>

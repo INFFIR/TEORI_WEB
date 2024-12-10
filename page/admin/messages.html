@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin Dashboard - Soapy Suds</title>
+  <title>Pesan - Soapy Suds Admin</title>
   
   <!-- Common CSS -->
   <link rel="stylesheet" href="css/sidebar.css">
-  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/messages.css">
   
   <!-- Font Awesome for Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
   
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
@@ -20,6 +20,7 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <ul>
+      <!-- Existing menu items -->
       <li><a href="admin.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
       <li><a href="account.html"><i class="fas fa-user"></i> Account</a></li>
       <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
@@ -31,24 +32,39 @@
       <!-- Menu Baru -->
       <li><a href="transactions.html"><i class="fas fa-exchange-alt"></i> Transaksi</a></li>
       <li><a href="comments.html"><i class="fas fa-comments"></i> Komentar</a></li>
-      <li><a href="messages.html"><i class="fas fa-envelope-open-text"></i> Pesan</a></li>
+      <li><a href="messages.html" class="active"><i class="fas fa-envelope-open-text"></i> Pesan</a></li>
     </ul>
   </div>
   
   <!-- Main Content -->
   <div class="main-content">
     <header>
-      <h1>Admin Dashboard</h1>
+      <h1>Daftar Pesan</h1>
     </header>
     
-    <section id="dashboard-overview" class="admin-section">
-      <p>Welcome to the Soapy Suds Admin Dashboard!</p>
-      <!-- Add dashboard widgets or summaries here -->
+    <section class="admin-section">
+      <table id="messages-table">
+        <thead>
+          <tr>
+            <th>ID Pesan</th>
+            <th>ID Kontak</th>
+            <th>Nama</th>
+            <th>Email</th>
+            <th>Pesan</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Pesan akan diisi via JavaScript -->
+        </tbody>
+      </table>
     </section>
   </div>
   
   <!-- Common JS -->
   <script src="js/sidebar.js"></script>
-  <script src="js/admin.js"></script>
+  
+  <!-- Page Specific JS -->
+  <script src="js/messages.js"></script>
 </body>
 </html>

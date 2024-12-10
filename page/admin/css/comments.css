@@ -1,0 +1,32 @@
+/* comments.css */
+
+/* Table Styles */
+#comments-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#comments-table th,
+#comments-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#comments-table th {
+    background-color: #1d3b76;
+    color: white;
+}
+
+button.action-btn {
+    background-color: #dc3545; /* Merah untuk hapus */
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.action-btn:hover {
+    background-color: #c82333;
+}

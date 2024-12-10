@@ -1,0 +1,108 @@
+/* transactions.css */
+
+/* Table Styles */
+#transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#transaction-table th,
+#transaction-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#transaction-table th {
+    background-color: #1d3b76;
+    color: white;
+}
+
+button.action-btn {
+    background-color: #1d3b76;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.action-btn:hover {
+    background-color: #163165;
+}
+
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 100; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; /* 10% dari atas dan center */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%; /* Bisa disesuaikan */
+    border-radius: 5px;
+    position: relative;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+}
+
+.detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.detail-table th,
+.detail-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.detail-table th {
+    background-color: #1d3b76;
+    color: white;
+}
+
+.detail-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.detail-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.detail-table tfoot tr td {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* Optional: Tambahkan padding pada modal */
+.modal-content {
+    padding: 30px;
+}

@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin Dashboard - Soapy Suds</title>
+  <title>Transaksi - Soapy Suds Admin</title>
   
   <!-- Common CSS -->
   <link rel="stylesheet" href="css/sidebar.css">
-  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/transactions.css">
   
   <!-- Font Awesome for Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
   
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
@@ -29,7 +29,7 @@
       <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
       
       <!-- Menu Baru -->
-      <li><a href="transactions.html"><i class="fas fa-exchange-alt"></i> Transaksi</a></li>
+      <li><a href="transactions.html" class="active"><i class="fas fa-exchange-alt"></i> Transaksi</a></li>
       <li><a href="comments.html"><i class="fas fa-comments"></i> Komentar</a></li>
       <li><a href="messages.html"><i class="fas fa-envelope-open-text"></i> Pesan</a></li>
     </ul>
@@ -38,17 +38,41 @@
   <!-- Main Content -->
   <div class="main-content">
     <header>
-      <h1>Admin Dashboard</h1>
+      <h1>Daftar Transaksi</h1>
     </header>
     
-    <section id="dashboard-overview" class="admin-section">
-      <p>Welcome to the Soapy Suds Admin Dashboard!</p>
-      <!-- Add dashboard widgets or summaries here -->
+    <section class="admin-section">
+      <table id="transaction-table">
+        <thead>
+          <tr>
+            <th>ID Transaksi</th>
+            <th>User ID</th>
+            <th>Lokasi Laundry</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Transaksi akan diisi via JavaScript -->
+        </tbody>
+      </table>
     </section>
+  </div>
+  
+  <!-- Modal Detail Transaksi -->
+  <div id="detail-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2>Detail Transaksi</h2>
+      <div id="transaction-details">
+        <!-- Detail akan diisi via JavaScript -->
+      </div>
+    </div>
   </div>
   
   <!-- Common JS -->
   <script src="js/sidebar.js"></script>
-  <script src="js/admin.js"></script>
+  
+  <!-- Page Specific JS -->
+  <script src="js/transactions.js"></script>
 </body>
 </html>
