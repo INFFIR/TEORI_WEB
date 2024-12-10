@@ -37,18 +37,18 @@ switch($method){
         if($id){
             $controller->update($id);
         } else {
-            echo json_encode(["message" => "ID is required for update."]);
+            echo json_encode(["success" => false, "message" => "ID is required for update."]);
         }
         break;
     case 'DELETE':
         if($id){
             $controller->delete($id);
         } else {
-            echo json_encode(["message" => "ID is required for deletion."]);
+            echo json_encode(["success" => false, "message" => "ID is required for deletion."]);
         }
         break;
     default:
-        echo json_encode(["message" => "Method not allowed."]);
+        echo json_encode(["success" => false, "message" => "Method not allowed."]);
         break;
 }
 ?>
