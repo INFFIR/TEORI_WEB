@@ -2,7 +2,7 @@
 session_start();  // Memulai session
 
 // Koneksi ke database
-$conn = new mysqli("localhost", "root", "", "almeraa_laundry");
+$conn = new mysqli("localhost", "root", "", "web_laundry");
 
 // Periksa koneksi
 if ($conn->connect_error) {

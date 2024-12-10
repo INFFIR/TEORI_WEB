@@ -8,7 +8,7 @@ header("Access-Control-Allow-Headers: Content-Type");
 $host = 'localhost';
 $user = 'root';
 $pass = '';
-$db = 'almeraa_laundry';
+$db = 'web_laundry';
 
 $conn = new mysqli($host, $user, $pass, $db);
 
@@ -19,11 +19,11 @@ if ($conn->connect_error) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
 
-    $name = $conn->real_escape_string($input['name'] ?? '');
+    $name = $conn->real_escape_string($input['username_user'] ?? '');
     $username = $conn->real_escape_string($input['username'] ?? '');
     $email = $conn->real_escape_string($input['email'] ?? '');
-    $password = $conn->real_escape_string($input['password'] ?? '');
-    $profile_image = $conn->real_escape_string($input['profile_image'] ?? 'https://example.com/default.jpg');
+    $password = $conn->real_escape_string($input['password_user'] ?? '');
+    $profile_image = $conn->real_escape_string($input['user_image_profile'] ?? 'https://example.com/default.jpg');
 
     if (empty($name) || empty($username) || empty($email) || empty($password)) {
         echo json_encode(["error" => "Semua kolom harus diisi"]);

@@ -2,7 +2,7 @@
 $host = "localhost";
 $username = "root";
 $password = "";
-$dbname = "almeraa_laundry";
+$dbname = "web_laundry";
 
 // Membuat koneksi
 $conn = new mysqli($host, $username, $password, $dbname);
