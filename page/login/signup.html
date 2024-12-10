@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/signup.css">
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card shadow-sm w-100" style="max-width: 400px;">
+            <div class="card-body">
+                <h1 class="card-title mb-4 text-center">Sign up to Almeraa Laundry</h1>
+                <form id="signupForm" action="http://localhost/TEORI_WEB/page/signup/signup.php" method="POST">
+                    <div class="form-group">
+                        <label for="profile_image">Profile Image URL</label>
+                        <input type="url" class="form-control" id="profile_image" name="profile_image" placeholder="https://example.com/image.jpg">
+                        <small id="profile_image_error" class="form-text text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                        <small id="name_error" class="form-text text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                        <small id="username_error" class="form-text text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                        <small id="email_error" class="form-text text-danger"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" minlength="6" required>
+                        <small id="password_error" class="form-text text-danger"></small>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+                        <label class="form-check-label" for="terms">
+                            I agree with Almeraa Laundry's <a href="#">Terms of Service</a>, <a href="#">Privacy Policy</a>, and default <a href="#">Notification Settings</a>.
+                        </label>
+                        <small id="terms_error" class="form-text text-danger"></small>
+                    </div>
+                    <button type="submit" class="btn btn-dark btn-block">Create Account</button>
+                </form>                
+                <div class="mt-3 text-center">
+                    Already have an account? <a href="/TEORI_WEB/page/signin/signin.html">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="./js/signup.js"></script>
+</body>
+</html>
