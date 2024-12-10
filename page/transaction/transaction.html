@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -39,55 +39,21 @@
     <div class="transaction-container container">
       <!-- Step 1: Select Location -->
       <div class="step" id="step-location">
-        <h3>Step 1: Select laundry Location</h3>
-        <input type="text" id="location-input" placeholder="Enter location" required>
+        <h3>Step 1: Pilih Lokasi Laundry</h3>
+        <input type="text" id="location-input" placeholder="Masukkan lokasi" required>
       </div>
 
       <!-- Step 2: Select Services -->
       <div class="step" id="step-services">
-        <h3>Step 2: Select Services</h3>
+        <h3>Step 2: Pilih Layanan</h3>
         <div class="services-list">
-          <!-- 1. Dry Cleaning -->
-          <div class="service-item" data-service="dry-clean">
-            <i class="fa-solid fa-tshirt fa-2x"></i>
-            <p>Dry Cleaning</p>
-          </div>
-          
-          <!-- 2. Premium Laundry -->
-          <div class="service-item" data-service="laundry">
-            <i class="fa-solid fa-soap fa-2x"></i>
-            <p>Premium Laundry</p>
-          </div>
-          
-          <!-- 3. Steam Ironing -->
-          <div class="service-item" data-service="steam-iron">
-            <i class="fa-solid fa-fire fa-2x"></i>
-            <p>Steam Ironing</p>
-          </div>
-          
-          <!-- 4. Shoes Cleaning -->
-          <div class="service-item" data-service="shoes-clean">
-            <i class="fa-solid fa-shoe-prints fa-2x"></i>
-            <p>Shoes Cleaning</p>
-          </div>
-          
-          <!-- 5. Bag Cleaning -->
-          <div class="service-item" data-service="bag-clean">
-            <i class="fa-solid fa-briefcase fa-2x"></i>
-            <p>Bag Cleaning</p>
-          </div>
-          
-          <!-- 6. Carpet Cleaning -->
-          <div class="service-item" data-service="carpet-clean">
-            <i class="fa-solid fa-table fa-2x"></i>
-            <p>Carpet Cleaning</p>
-          </div>
+          <!-- Kategori akan diisi secara dinamis oleh JavaScript -->
         </div>
       </div>
 
       <!-- Step 3: Select Items -->
       <div class="step" id="step-items" style="display: none;">
-        <h3>Step 3: Select Items</h3>
+        <h3>Step 3: Pilih Item</h3>
         <div class="items-list" id="items-list">
           <!-- Dynamic Item Cards Based on Selected Services -->
         </div>
@@ -95,13 +61,13 @@
 
       <!-- Order Summary -->
       <div class="order-summary" id="order-summary" style="display: none;">
-        <h3>Order Summary</h3>
+        <h3>Ringkasan Pesanan</h3>
         <p id="summary-location"></p>
         <p id="summary-services"></p>
         <p id="summary-items"></p>
         <p id="summary-time"></p>
         <div class="order-actions">
-          <button id="proceed-to-notation" class="btn btn-primary" onclick="window.location.href='../invoice/invoice.html'">Proceed to Notation</button>
+          <button id="proceed-to-notation" class="btn btn-primary">Lanjutkan ke Notasi</button>
         </div>
       </div>
     </div>

@@ -59,8 +59,24 @@
   border: 2px solid #0f5132;
 }
 
-.service-item i {
-  color: #0d6efd;
+/* Styling untuk kategori image */
+.service-item img.category-icon {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%; /* Membuat gambar menjadi bulat */
+  margin-bottom: 10px;
+}
+
+/* Jika Anda tetap ingin menggunakan ikon default */
+.service-item .default-icon {
+  background-color: #cccccc;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
   margin-bottom: 10px;
 }
 
@@ -69,11 +85,12 @@
   color: #333333;
 }
 
-.item-card img {
-  max-width: 100%;
+.item-card img.service-offered-image {
+  width: 100%;
   height: 150px;
   object-fit: cover;
   border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 .quantity-controls {
