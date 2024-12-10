@@ -20,20 +20,44 @@ class ServiceOfferedController {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' 
                      || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $host = $_SERVER['HTTP_HOST'];
-        $baseUrl = $protocol . $host . '/';
+        $baseUrl = $protocol . $host . '/'; // Sesuaikan jika project berada di subdirektori
         return $baseUrl;
     }
 
-    // Mendapatkan semua layanan dengan kategori
+    // Mendapatkan semua layanan dengan kategori dan mendukung filter multiple category_id
     public function getAll(){
         try {
             $conn = $this->model->getConnection();
             $table = $this->model->getTable();
-            $query = "SELECT so.*, sc.title AS category_title 
-                      FROM {$table} so 
-                      JOIN service_category sc ON so.category_id = sc.category_id";
-            $stmt = $conn->prepare($query);
-            $stmt->execute();
+
+            // Cek apakah ada parameter category_ids dalam query
+            if(isset($_GET['category_ids'])){
+                $categoryIds = explode(',', $_GET['category_ids']);
+                $categoryIds = array_map('intval', $categoryIds);
+                $placeholders = implode(',', array_fill(0, count($categoryIds), '?'));
+                $query = "SELECT so.*, sc.title AS category_title 
+                          FROM {$table} so 
+                          JOIN service_category sc ON so.category_id = sc.category_id
+                          WHERE so.category_id IN ($placeholders)";
+                $stmt = $conn->prepare($query);
+                $stmt->execute($categoryIds);
+            } elseif(isset($_GET['category_id'])){
+                $categoryId = intval($_GET['category_id']);
+                $query = "SELECT so.*, sc.title AS category_title 
+                          FROM {$table} so 
+                          JOIN service_category sc ON so.category_id = sc.category_id
+                          WHERE so.category_id = ?";
+                $stmt = $conn->prepare($query);
+                $stmt->execute([$categoryId]);
+            } else {
+                // Jika tidak ada filter, ambil semua layanan
+                $query = "SELECT so.*, sc.title AS category_title 
+                          FROM {$table} so 
+                          JOIN service_category sc ON so.category_id = sc.category_id";
+                $stmt = $conn->prepare($query);
+                $stmt->execute();
+            }
+
             $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             // Pastikan setiap service memiliki URL gambar yang benar
@@ -261,8 +285,9 @@ class ServiceOfferedController {
             // Mendapatkan base URL
             $baseUrl = $this->getBaseUrl();
 
-            // Kembalikan URL absolut untuk disimpan di database
-            return ["success" => true, "file_path" => $baseUrl . 'uploads/service_offered/' . $uniqueFileName];
+            // Mendapatkan path relatif untuk disimpan di database
+            $relativePath = 'uploads/service_offered/' . $uniqueFileName;
+            return ["success" => true, "file_path" => $baseUrl . $relativePath];
         } else {
             return ["success" => false, "message" => "Sorry, there was an error uploading your file."];
         }
