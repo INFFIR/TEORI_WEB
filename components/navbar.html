@@ -16,10 +16,13 @@
       <li><a href="#testimonials" data-id="testimonials">Testimonials</a></li>
       <li><a href="#contact" data-id="contact">Contact</a></li>
       <li><a href="page/admin/admin.html" data-id="admin">Admin</a></li>
+      <!-- Menu Login Baru -->
+      <li><a href="page/auth/login.html" data-id="login" class="login-button">Login</a></li>
     </ul>
     <a href="#home" class="logo"><img src="images/logo.png" alt="Soapy Suds"></a>
   </div>
 </nav>
+
 
 <script>
   (function() {
@@ -36,6 +39,8 @@
         order: '#order-home', // Asumsi: 'order.html' adalah halaman Order
         testimonials: './about.html#testimonials',
         contact: './about.html#contact',
+        admin: 'page/admin/admin.html',
+        login: 'page/signin/signin.html' // Tambahkan mapping untuk Login
       },
       'transaction-page': {
         home: '../../about.html#home',
@@ -45,6 +50,8 @@
         order: '../../about.html#order',
         testimonials: '../../about.html#testimonials',
         contact: '../../about.html#contact',
+        admin: '../../page/admin/admin.html',
+        login: '../../page/signin/signin.html' // Tambahkan mapping untuk Login
       },
       // Mapping untuk halaman lain dapat ditambahkan di sini
     };
