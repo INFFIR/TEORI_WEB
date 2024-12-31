@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Invoice</title>
   
@@ -15,7 +16,11 @@
   <section class="invoice-section">
     <div class="invoice-container">
       <h1 class="invoice-title">Invoice</h1>
-      <div class="invoice-details">
+      
+      <!-- Tambahkan elemen untuk pesan error -->
+      <div id="invoice-error" class="error-message" style="color: red; display: none;"></div>
+      
+      <div class="invoice-details" id="invoice-details">
         <p><strong>Location:</strong> <span id="invoice-location"></span></p>
         <hr>
         <p><strong>Services:</strong> <span id="invoice-services"></span></p>

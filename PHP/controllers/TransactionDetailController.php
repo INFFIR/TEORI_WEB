@@ -12,14 +12,26 @@ class TransactionDetailController {
 
     public function getAll(){
         $stmt = $this->model->getAll();
-        $details = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        echo json_encode($details);
+        if (!$stmt) {
+            echo json_encode(["success" => false, "message" => "Query failed."]);
+            return;
+        }
+        $details = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode(["success" => true, "data" => $details]);
     }
 
     public function getById($id){
         $stmt = $this->model->getById($id);
-        $detail = $stmt->fetch(\PDO::FETCH_ASSOC);
-        echo json_encode($detail);
+        if (!$stmt) {
+            echo json_encode(["success" => false, "message" => "Query failed."]);
+            return;
+        }
+        $detail = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($detail) {
+            echo json_encode(["success" => true, "data" => $detail]);
+        } else {
+            echo json_encode(["success" => false, "message" => "Detail transaksi tidak ditemukan."]);
+        }
     }
 
     public function create(){
@@ -27,7 +39,7 @@ class TransactionDetailController {
 
         // Validasi data
         if(!isset($data['transaction_id'], $data['offered_id'])){
-            echo json_encode(["message" => "Missing required fields."]);
+            echo json_encode(["success" => false, "message" => "Missing required fields."]);
             return;
         }
 
@@ -42,9 +54,9 @@ class TransactionDetailController {
         }
 
         if($this->model->create($data)){
-            echo json_encode(["message" => "Transaction detail created successfully."]);
+            echo json_encode(["success" => true, "message" => "Transaction detail created successfully."]);
         } else {
-            echo json_encode(["message" => "Failed to create transaction detail."]);
+            echo json_encode(["success" => false, "message" => "Failed to create transaction detail."]);
         }
     }
 
@@ -53,7 +65,7 @@ class TransactionDetailController {
 
         // Validasi data
         if(empty($data)){
-            echo json_encode(["message" => "No data provided for update."]);
+            echo json_encode(["success" => false, "message" => "No data provided for update."]);
             return;
         }
 
@@ -61,24 +73,32 @@ class TransactionDetailController {
         if(isset($data['offered_price']) || isset($data['value_count'])){
             // Fetch existing record
             $stmt = $this->model->getById($id);
-            $existing = $stmt->fetch(\PDO::FETCH_ASSOC);
+            if (!$stmt) {
+                echo json_encode(["success" => false, "message" => "Query failed."]);
+                return;
+            }
+            $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (!$existing) {
+                echo json_encode(["success" => false, "message" => "Detail transaksi tidak ditemukan."]);
+                return;
+            }
             $offered_price = isset($data['offered_price']) ? $data['offered_price'] : $existing['offered_price'];
             $value_count = isset($data['value_count']) ? $data['value_count'] : $existing['value_count'];
             $data['sum_offered_price'] = $offered_price * $value_count;
         }
 
         if($this->model->update($id, $data)){
-            echo json_encode(["message" => "Transaction detail updated successfully."]);
+            echo json_encode(["success" => true, "message" => "Transaction detail updated successfully."]);
         } else {
-            echo json_encode(["message" => "Failed to update transaction detail."]);
+            echo json_encode(["success" => false, "message" => "Failed to update transaction detail."]);
         }
     }
 
     public function delete($id){
         if($this->model->delete($id)){
-            echo json_encode(["message" => "Transaction detail deleted successfully."]);
+            echo json_encode(["success" => true, "message" => "Transaction detail deleted successfully."]);
         } else {
-            echo json_encode(["message" => "Failed to delete transaction detail."]);
+            echo json_encode(["success" => false, "message" => "Failed to delete transaction detail."]);
         }
     }
 }

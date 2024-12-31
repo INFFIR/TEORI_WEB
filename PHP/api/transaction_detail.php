@@ -3,13 +3,7 @@
 
 require_once __DIR__ . '/../controllers/TransactionDetailController.php';
 
-// [SESSION CHECK ADDED] Mulai session untuk cek user login
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("HTTP/1.1 401 Unauthorized");
-    echo json_encode(["success" => false, "message" => "User not logged in."]);
-    exit();
-}
+// [SESSION CHECK REMOVED] Tidak perlu memeriksa sesi
 
 // Set headers
 header("Access-Control-Allow-Origin: *");
@@ -45,18 +39,18 @@ switch($method){
         if($id){
             $controller->update($id);
         } else {
-            echo json_encode(["message" => "ID is required for update."]);
+            echo json_encode(["success" => false, "message" => "ID is required for update."]);
         }
         break;
     case 'DELETE':
         if($id){
             $controller->delete($id);
         } else {
-            echo json_encode(["message" => "ID is required for deletion."]);
+            echo json_encode(["success" => false, "message" => "ID is required for deletion."]);
         }
         break;
     default:
-        echo json_encode(["message" => "Method not allowed."]);
+        echo json_encode(["success" => false, "message" => "Method not allowed."]);
         break;
 }
 ?>

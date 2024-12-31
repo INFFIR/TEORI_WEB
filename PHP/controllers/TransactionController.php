@@ -12,12 +12,25 @@ class TransactionController {
 
     public function getAll(){
         $stmt = $this->model->getAll();
+        if ($stmt === false) {
+            echo json_encode(["success" => false, "message" => "Gagal menjalankan query."]);
+            return;
+        }
         $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($transactions === false) {
+            echo json_encode(["success" => false, "message" => "Gagal mengambil data transaksi."]);
+            return;
+        }
         echo json_encode(["success" => true, "data" => $transactions]);
     }
 
     public function getById($id){
         $stmt = $this->model->getById($id);
+        if ($stmt === false) {
+            echo json_encode(["success" => false, "message" => "Gagal menjalankan query."]);
+            return;
+        }
+
         $transaction = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if($transaction){
@@ -28,8 +41,15 @@ class TransactionController {
             $query = "SELECT * FROM transaction_detail WHERE transaction_id = :transaction_id";
             $stmt_details = $conn->prepare($query);
             $stmt_details->bindParam(':transaction_id', $id, PDO::PARAM_INT);
-            $stmt_details->execute();
+            if (!$stmt_details->execute()) {
+                echo json_encode(["success" => false, "message" => "Gagal menjalankan query detail transaksi."]);
+                return;
+            }
             $details = $stmt_details->fetchAll(PDO::FETCH_ASSOC);
+            if ($details === false) {
+                echo json_encode(["success" => false, "message" => "Gagal mengambil data detail transaksi."]);
+                return;
+            }
 
             // Tambahkan detail ke dalam transaksi
             $transaction['transaction_details'] = $details;
@@ -44,8 +64,8 @@ class TransactionController {
         // Mendapatkan data dari input JSON
         $data = json_decode(file_get_contents("php://input"), true);
 
-        // [SESSION OVERRIDE ADDED] Pastikan user_id diambil dari session
-        $data['user_id'] = $_SESSION['user_id'] ?? null;
+        // [USER_ID SET TO 6] Tetapkan user_id secara statis
+        $data['user_id'] = 6;
 
         // Validasi data
         if(!isset($data['user_id'], $data['laundry_location'])){
@@ -54,9 +74,7 @@ class TransactionController {
         }
 
         if($this->model->create($data)){
-            // Jika ingin mengembalikan data transaksi yang baru dibuat,
-            // Anda bisa mengambil last_insert_id atau sejenisnya. 
-            // Contoh:
+            // Mengambil last_insert_id
             $lastId = $this->model->getConnection()->lastInsertId();
             echo json_encode(["success" => true, "message" => "Transaction created successfully.", "data" => ["transaction_id" => $lastId]]);
         } else {

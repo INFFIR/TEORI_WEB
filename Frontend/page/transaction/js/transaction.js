@@ -2,7 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // Memuat navbar
-  loadExternalHTML('../../../components/navbar.html', '#navbar')
+  loadExternalHTML('/TEORI_WEB/Frontend/components/navbar.html', '#navbar')
     .then(() => {
       // Setelah navbar dimuat, lanjutkan dengan logika lainnya jika diperlukan
     })
@@ -262,11 +262,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let itemsHTML = '<ul>';
     let totalTime = 0;
+    let totalPrice = 0;
     for (const key in selectedItems) {
       const item = selectedItems[key];
-      itemsHTML += `<li>${item.name} x ${item.quantity} - Rp${(item.price * item.quantity).toLocaleString()}</li>`;
+      itemsHTML += `<li>${item.name} x${item.quantity} - Rp${(item.price * item.quantity).toLocaleString()}</li>`;
       // Estimasi waktu berdasarkan layanan
       totalTime += item.timePerItem * item.quantity;
+      totalPrice += item.price * item.quantity;
     }
     itemsHTML += '</ul>';
     summaryItems.innerHTML = `Item yang Dipesan: ${itemsHTML}`;
@@ -276,6 +278,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const days = Math.floor(totalTime / 24);
     const hours = totalTime % 24;
     summaryTime.textContent = `Estimasi Waktu Selesai: ${totalTime} jam (${days > 0 ? days + ' hari' + (days > 1 ? 's' : '') : ''}${days > 0 && hours > 0 ? ', ' : ''}${hours > 0 ? hours + ' jam' + (hours > 1 ? 's' : '') : ''})`;
+
+    // Simpan data transaksi ke localStorage (opsional jika diperlukan)
+    const transactionData = {
+      location: location,
+      selectedServices: selectedCategoryIds,
+      selectedItems: selectedItems,
+      totalPrice: totalPrice,
+      totalTime: totalTime
+    };
+    localStorage.setItem('transactionData', JSON.stringify(transactionData));
   }
 
   // Fungsi pembantu untuk mendapatkan nama kategori berdasarkan ID
@@ -303,24 +315,14 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Ambil user_id dari localStorage atau sumber lain (pastikan user sudah login)
-    const userId = localStorage.getItem('user_id'); // Sesuaikan dengan cara Anda menyimpan user_id
-
-    if (!userId) {
-      alert('Pengguna tidak terautentikasi. Silakan login.');
-      window.location.href = '/login.html'; // Redirect ke halaman login
-      return;
-    }
-
     try {
-      // 1. Buat transaksi
+      // 1. Buat transaksi tanpa user_id (backend akan mengatur user_id=6)
       const transactionResponse = await fetch('http://localhost/TEORI_WEB/PHP/api/transaction.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          user_id: parseInt(userId),
           laundry_location: locationInput.value.trim()
         })
       });
@@ -357,7 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         alert('Transaksi berhasil diselesaikan!');
-        // Redirect ke halaman invoice atau notasi dengan query parameter transaction_id
+        // Redirect ke halaman invoice dengan transaction_id sebagai parameter
         window.location.href = `../invoice/invoice.html?transaction_id=${transactionId}`;
       } else {
         throw new Error(`Gagal membuat transaksi: ${transactionData.message}`);

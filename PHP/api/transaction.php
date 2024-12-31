@@ -3,14 +3,7 @@
 
 require_once __DIR__ . '/../controllers/TransactionController.php';
 
-// [SESSION CHECK ADDED] Mulai session untuk cek user login
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    // Bila user belum login, kembalikan pesan error
-    header("HTTP/1.1 401 Unauthorized");
-    echo json_encode(["success" => false, "message" => "User not logged in."]);
-    exit();
-}
+// [SESSION CHECK REMOVED] Tidak perlu memeriksa sesi
 
 // Set headers
 header("Access-Control-Allow-Origin: *");
