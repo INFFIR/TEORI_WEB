@@ -10,31 +10,31 @@ class ContactController {
         $this->model = new Contact();
     }
 
-    // Mendapatkan semua kontak (seharusnya hanya satu)
+    // Get all contacts (should be only one)
     public function getAll(){
         $stmt = $this->model->getAll();
         $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($contacts);
     }
 
-    // Nonaktifkan metode getById karena hanya satu entri yang ada
+    // Disable getById method as only one entry exists
     public function getById($id){
         echo json_encode(["success" => false, "message" => "Operation not allowed."]);
     }
 
-    // Nonaktifkan metode create
+    // Disable create method
     public function create(){
         echo json_encode(["success" => false, "message" => "Create operation not allowed."]);
     }
 
-    // Memperbarui kontak
+    // Update contact
     public function update(){
         // Fetch the first contact entry
         $stmt = $this->model->getAll();
         $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if(count($contacts) == 0){
-            // Tidak ada entri kontak yang ada
+            // No contact entry exists
             echo json_encode(["success" => false, "message" => "No contact entry exists to update."]);
             return;
         }
@@ -45,24 +45,25 @@ class ContactController {
         // Handle form data and file upload
         $title_contact = isset($_POST['title_contact']) ? trim($_POST['title_contact']) : '';
         $image_url_contact = isset($_FILES['image_url_contact']) ? $_FILES['image_url_contact'] : null;
+        $logo_contact = isset($_FILES['logo_contact']) ? $_FILES['logo_contact'] : null;
 
-        // Validasi title_contact
+        // Validate title_contact
         if(empty($title_contact)){
             echo json_encode(["success" => false, "message" => "Contact title is required."]);
             return;
         }
 
-        // Persiapkan data untuk diperbarui
+        // Prepare data to update
         $data = [
             'title_contact' => $title_contact
         ];
 
-        // Tangani upload gambar jika ada
+        // Handle contact image upload if present
         if($image_url_contact && $image_url_contact['error'] == UPLOAD_ERR_OK){
-            // Validasi dan upload gambar
-            $uploadResult = $this->uploadImage($image_url_contact);
+            // Validate and upload image
+            $uploadResult = $this->uploadImage($image_url_contact, 'contact_images');
             if($uploadResult['success']){
-                // Hapus gambar lama jika ada
+                // Delete old contact image if exists
                 if(!empty($contact['image_url_contact'])){
                     $this->deleteImage($contact['image_url_contact']);
                 }
@@ -73,7 +74,23 @@ class ContactController {
             }
         }
 
-        // Lakukan pembaruan
+        // Handle logo upload if present
+        if($logo_contact && $logo_contact['error'] == UPLOAD_ERR_OK){
+            // Validate and upload logo
+            $uploadResult = $this->uploadImage($logo_contact, 'logos');
+            if($uploadResult['success']){
+                // Delete old logo if exists
+                if(!empty($contact['logo'])){
+                    $this->deleteImage($contact['logo']);
+                }
+                $data['logo'] = $uploadResult['file_path'];
+            } else {
+                echo json_encode(["success" => false, "message" => $uploadResult['message']]);
+                return;
+            }
+        }
+
+        // Perform the update
         if($this->model->update($contact_id, $data)){
             echo json_encode(["success" => true, "message" => "Contact entry updated successfully."]);
         } else {
@@ -81,16 +98,16 @@ class ContactController {
         }
     }
 
-    // Nonaktifkan metode delete
+    // Disable delete method
     public function delete($id){
         echo json_encode(["success" => false, "message" => "Delete operation not allowed."]);
     }
 
-    // Fungsi untuk menangani upload gambar
-    private function uploadImage($file){
-        $uploadDir = __DIR__ . '/../uploads/contact_images/';
+    // Function to handle image upload
+    private function uploadImage($file, $type){
+        $uploadDir = __DIR__ . '/../uploads/' . $type . '/';
 
-        // Buat direktori upload jika belum ada
+        // Create the upload directory if it doesn't exist
         if(!file_exists($uploadDir)){
             mkdir($uploadDir, 0755, true);
         }
@@ -98,40 +115,40 @@ class ContactController {
         $fileName = basename($file['name']);
         $imageFileType = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-        // Periksa apakah file adalah gambar
+        // Check if the file is an actual image
         $check = getimagesize($file['tmp_name']);
         if($check === false){
             return ["success" => false, "message" => "File is not an image."];
         }
 
-        // Periksa ukuran file (maks 5MB)
+        // Check file size (max 5MB)
         if($file['size'] > 5 * 1024 * 1024){
             return ["success" => false, "message" => "File size exceeds 5MB."];
         }
 
-        // Izinkan jenis file tertentu
+        // Allow only certain file formats
         $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
         if(!in_array($imageFileType, $allowedTypes)){
             return ["success" => false, "message" => "Only JPG, JPEG, PNG, and GIF files are allowed."];
         }
 
-        // Buat nama file unik
-        $uniqueFileName = uniqid('contact_', true) . '.' . $imageFileType;
+        // Generate a unique file name
+        $uniqueFileName = uniqid($type . '_', true) . '.' . $imageFileType;
         $targetFilePath = $uploadDir . $uniqueFileName;
 
         if(move_uploaded_file($file['tmp_name'], $targetFilePath)){
-            // Dapatkan base URL
+            // Get the base URL
             $baseUrl = $this->getBaseUrl();
-            // Kembalikan URL absolut
-            return ["success" => true, "file_path" => $baseUrl . 'uploads/contact_images/' . $uniqueFileName];
+            // Return the absolute URL
+            return ["success" => true, "file_path" => $baseUrl . 'uploads/' . $type . '/' . $uniqueFileName];
         } else {
             return ["success" => false, "message" => "There was an error uploading the image."];
         }
     }
 
-    // Fungsi untuk menghapus gambar lama
+    // Function to delete old image
     private function deleteImage($image_url_contact){
-        // Parse URL untuk mendapatkan path relatif
+        // Parse URL to get the relative path
         $parsedUrl = parse_url($image_url_contact);
         $imagePath = __DIR__ . '/../' . ltrim($parsedUrl['path'], '/');
 
@@ -140,12 +157,12 @@ class ContactController {
         }
     }
 
-    // Fungsi untuk mendapatkan base URL
+    // Function to get base URL
     private function getBaseUrl(){
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' 
                      || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $host = $_SERVER['HTTP_HOST'];
-        // Pastikan base URL tidak termasuk subdirektori 'api'
+        // Ensure the base URL does not include the 'api' subdirectory
         $baseUrl = $protocol . $host . '/TEORI_WEB/PHP/';
         return $baseUrl;
     }

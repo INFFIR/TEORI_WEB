@@ -1,4 +1,4 @@
-// contact.js
+// js/contact.js
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchContact();
@@ -13,6 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Populate the form with existing data
         const title = document.getElementById('display-title_contact').innerText;
         document.getElementById('edit_title_contact').value = title;
+
+        // Optionally, display current images/logos or provide previews
+
         editModal.style.display = 'block';
     });
 
@@ -34,12 +37,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const title_contact = document.getElementById('edit_title_contact').value;
         const image_url_contact = document.getElementById('edit_image_url_contact').files[0];
+        const logo_contact = document.getElementById('edit_logo_contact').files[0];
 
         const formData = new FormData();
         formData.append('action', 'update');
         formData.append('title_contact', title_contact);
         if (image_url_contact) {
             formData.append('image_url_contact', image_url_contact);
+        }
+        if (logo_contact) {
+            formData.append('logo_contact', logo_contact);
         }
 
         fetch('http://localhost/TEORI_WEB/PHP/api/contact.php', {
@@ -62,19 +69,33 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('http://localhost/TEORI_WEB/PHP/api/contact.php?action=read')
             .then(response => response.json())
             .then(data => {
+                console.log('Fetched Contact Data:', data); // Debug Log
                 if (data.length > 0) {
                     const contact = data[0]; // Assuming only one contact entry
                     document.getElementById('display-title_contact').innerText = contact.title_contact;
+                    
                     if (contact.image_url_contact) {
                         document.getElementById('display-image_url_contact').src = contact.image_url_contact;
+                        document.getElementById('display-image_url_contact').alt = 'Contact Image';
                     } else {
                         document.getElementById('display-image_url_contact').src = '';
                         document.getElementById('display-image_url_contact').alt = 'No Image';
+                    }
+
+                    if (contact.logo) {
+                        console.log('Logo URL:', contact.logo); // Debug Log
+                        document.getElementById('display-logo_contact').src = contact.logo;
+                        document.getElementById('display-logo_contact').alt = 'Logo';
+                    } else {
+                        document.getElementById('display-logo_contact').src = '';
+                        document.getElementById('display-logo_contact').alt = 'No Logo';
                     }
                 } else {
                     document.getElementById('display-title_contact').innerText = 'No Contact Information Available';
                     document.getElementById('display-image_url_contact').src = '';
                     document.getElementById('display-image_url_contact').alt = 'No Image';
+                    document.getElementById('display-logo_contact').src = '';
+                    document.getElementById('display-logo_contact').alt = 'No Logo';
                 }
             })
             .catch(error => console.error('Error:', error));

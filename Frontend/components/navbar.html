@@ -1,30 +1,50 @@
-<!-- components/navbar.html -->
-<nav class="navbar">
-  <div class="navbar-container container">
-    <input type="checkbox" name="navbar-toggle" id="navbar-toggle">
-    <div class="hamburger-lines">
-      <span class="line line1"></span>
-      <span class="line line2"></span>
-      <span class="line line3"></span>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Navbar - Soapy Suds</title>
+  <!-- Contoh: muat CSS navbar (opsional) -->
+  <link rel="stylesheet" href="css/navbar.css">
+</head>
+<body>
 
-    <!-- Menu Utama -->
-    <ul class="menu-items" id="navbar-links">
-      <li><a href="/TEORI_WEB/Frontend/index.html">Home</a></li>
-      <li><a href="/TEORI_WEB/Frontend/about.html">About</a></li>
-      <li><a href="/TEORI_WEB/Frontend/about.html#services">Services</a></li>
-      <li><a href="/TEORI_WEB/Frontend/about.html#pricing">Pricing</a></li>
-      <li><a href="/TEORI_WEB/Frontend/about.html#order">Order</a></li>
-      <li><a href="/TEORI_WEB/Frontend/about.html#testimonials">Testimonials</a></li>
-      <li><a href="/TEORI_WEB/Frontend/about.html#contact">Contact</a></li>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container container">
+      <input type="checkbox" name="navbar-toggle" id="navbar-toggle">
+      <div class="hamburger-lines">
+        <span class="line line1"></span>
+        <span class="line line2"></span>
+        <span class="line line3"></span>
+      </div>
       
-      <li><a href="/TEORI_WEB/Frontend/page/admin/admin.html">Admin</a></li>
-      <li><a href="/TEORI_WEB/Frontend/page/signin/signin.html" class="login-button">Login</a></li>
-    </ul>
+      <!-- Menu Utama -->
+      <ul class="menu-items" id="navbar-links">
+        <li><a href="/TEORI_WEB/Frontend/index.html">Home</a></li>
+        <li><a href="/TEORI_WEB/Frontend/about.html">About</a></li>
+        <li><a href="/TEORI_WEB/Frontend/about.html#services">Services</a></li>
+        <li><a href="/TEORI_WEB/Frontend/about.html#pricing">Pricing</a></li>
+        <li><a href="/TEORI_WEB/Frontend/about.html#order">Order</a></li>
+        <li><a href="/TEORI_WEB/Frontend/about.html#testimonials">Testimonials</a></li>
+        <li><a href="/TEORI_WEB/Frontend/about.html#contact">Contact</a></li>
+        <li><a href="/TEORI_WEB/Frontend/page/admin/admin.html">Admin</a></li>
+        <li><a href="/TEORI_WEB/Frontend/page/signin/signin.html" class="login-button">Login</a></li>
+      </ul>
 
-    <!-- Logo -->
-    <a href="/TEORI_WEB/Frontend/index.html" class="logo">
-      <img src="/TEORI_WEB/Frontend/images/logo.png" alt="Soapy Suds">
-    </a>
-  </div>
-</nav>
+      <!-- Logo -->
+      <!-- Sama seperti di contact, tetapi tanpa form edit -->
+      <a href="/TEORI_WEB/Frontend/index.html" class="logo">
+        <img
+          id="navbar-logo-img"
+          src=""
+          alt="Soapy Suds Logo"
+          style="max-height: 50px;"
+        />
+      </a>
+    </div>
+  </nav>
+
+  <!-- Pastikan file JS ini dipanggil setelah elemen 'navbar-logo-img' ada di DOM -->
+  <script src="js/navbar.js"></script>
+</body>
+</html>

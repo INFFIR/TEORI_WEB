@@ -1,5 +1,5 @@
 <?php
-// api/contact.php
+// File: api/contact.php
 
 require_once __DIR__ . '/../controllers/ContactController.php';
 
@@ -23,18 +23,21 @@ $method = $_SERVER['REQUEST_METHOD'];
 // Determine the 'action' parameter
 $action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : 'read');
 
-// Get the ID from the URL if present (not needed as only one contact entry)
+// We only have single contact row
 $id = isset($_GET['id']) ? intval($_GET['id']) : null;
 
 switch($action){
     case 'read':
-        $controller->getAll(); // getAll should return the single contact entry
+        $controller->getAll(); 
         break;
     case 'update':
-        $controller->update();
+        if ($method === 'POST') {
+            $controller->update();
+        } else {
+            echo json_encode(["success" => false, "message" => "Invalid request method for update."]);
+        }
         break;
     default:
         echo json_encode(["message" => "Action not allowed."]);
         break;
 }
-?>
