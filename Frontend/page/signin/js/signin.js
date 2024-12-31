@@ -26,7 +26,7 @@ document.getElementById('signinForm').addEventListener('submit', async function(
     if (hasError) return;
 
     try {
-        const response = await fetch('http://localhost:8000/api/signin.php', {
+        const response = await fetch('http://localhost/TEORI_WEB/PHP/api/signin.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

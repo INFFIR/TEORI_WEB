@@ -211,7 +211,7 @@ class AboutController {
         // Sesuaikan base URL sesuai konfigurasi server Anda
         $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
         $host = $_SERVER['HTTP_HOST'];
-        $baseUrl = $protocol . "://" . $host . "/uploads/";
+        $baseUrl = $protocol . "://" . $host . "/TEORI_WEB/PHP/uploads/";
         $relativePath = basename($imagePath);
         return $baseUrl . $relativePath;
     }

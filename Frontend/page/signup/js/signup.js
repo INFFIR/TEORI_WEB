@@ -40,7 +40,7 @@ document.getElementById('signupForm').addEventListener('submit', async function(
     if (hasError) return;
 
     try {
-        const response = await fetch('http://localhost:8000/api/signup.php', {
+        const response = await fetch('http://localhost/TEORI_WEB/PHP/api/signup.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

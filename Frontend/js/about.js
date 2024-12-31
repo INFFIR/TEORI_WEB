@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', async () => {
  */
 async function loadDynamicAboutSections() {
     try {
-        const response = await fetch('http://localhost:8000/api/about.php', {
+        const response = await fetch('http://localhost/TEORI_WEB/PHP/api/about.php', {
             method: 'GET'
         });
 
@@ -300,7 +300,7 @@ async function loadServices() {
     console.log('Fungsi loadServices() dipanggil.');
 
     // URL API Anda
-    const apiUrl = 'http://localhost:8000/api/service_category.php';
+    const apiUrl = 'http://localhost/TEORI_WEB/PHP/api/service_category.php';
 
     // Ambil elemen kontainer dan indikator loading
     const container = document.getElementById('service-container');
@@ -484,7 +484,7 @@ async function loadPricing() {
     console.log('Fungsi loadPricing() dipanggil.');
 
     // URL API Anda untuk pricing
-    const apiUrl = 'http://localhost:8000/api/service_offered.php';
+    const apiUrl = 'http://localhost/TEORI_WEB/PHP/api/service_offered.php';
 
     // Ambil elemen kontainer dan indikator loading
     const container = document.getElementById('pricing-container');
@@ -692,7 +692,7 @@ async function loadOrderSteps() {
     console.log('Fungsi loadOrderSteps() dipanggil.');
 
     // URL API Anda untuk langkah-langkah
-    const apiUrl = 'http://localhost:8000/api/step_order.php';
+    const apiUrl = 'http://localhost/TEORI_WEB/PHP/api/step_order.php';
 
     // Ambil elemen kontainer
     const container = document.getElementById('order-steps');

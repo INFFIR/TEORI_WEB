@@ -274,7 +274,7 @@ class ServiceCategoryController {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' 
                      || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $host = $_SERVER['HTTP_HOST'];
-        $baseUrl = $protocol . $host . '/'; // Asumsikan project berada di root
+        $baseUrl = $protocol . $host . '/TEORI_WEB/PHP/'; // Asumsikan project berada di root
         return $baseUrl . $relativePath;
     }
 

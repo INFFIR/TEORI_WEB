@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const formData = new FormData(serviceForm);
 
-        fetch('http://localhost:8000/api/service_offered.php', {
+        fetch('http://localhost/TEORI_WEB/PHP/api/service_offered.php', {
             method: 'POST',
             body: formData
         })
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Populate service categories in all select elements
     function populateCategories() {
-        fetch('http://localhost:8000/api/service_category.php')
+        fetch('http://localhost/TEORI_WEB/PHP/api/service_category.php')
             .then(response => response.json())
             .then(data => {
                 if(data.success){
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Fetch and display services
 function fetchServices() {
-    fetch('http://localhost:8000/api/service_offered.php', {
+    fetch('http://localhost/TEORI_WEB/PHP/api/service_offered.php', {
         method: 'GET'
     })
         .then(response => response.json())
@@ -91,7 +91,7 @@ function fetchServices() {
     // Delete service
     window.deleteService = function(offered_id) {
         if (confirm('Are you sure you want to delete this service?')) {
-            fetch(`http://localhost:8000/api/service_offered.php?id=${offered_id}`, {
+            fetch(`http://localhost/TEORI_WEB/PHP/api/service_offered.php?id=${offered_id}`, {
                 method: 'DELETE'
             })
             .then(response => response.json())
@@ -108,7 +108,7 @@ function fetchServices() {
     // Edit service
     window.editService = function(offered_id) {
         // Fetch service data
-        fetch(`http://localhost:8000/api/service_offered.php?id=${offered_id}`, {
+        fetch(`http://localhost/TEORI_WEB/PHP/api/service_offered.php?id=${offered_id}`, {
             method: 'GET'
         })
         .then(response => response.json())
@@ -162,7 +162,7 @@ function fetchServices() {
         const formData = new FormData(editServiceForm);
         formData.append('_method', 'PUT'); // Tambahkan field _method=PUT untuk method override
 
-        fetch(`http://localhost:8000/api/service_offered.php?id=${offered_id}`, {
+        fetch(`http://localhost/TEORI_WEB/PHP/api/service_offered.php?id=${offered_id}`, {
             method: 'POST', // Gunakan POST dan method override
             body: formData
         })

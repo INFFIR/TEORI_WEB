@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const formData = new FormData(stepForm);
 
-        fetch('http://localhost:8000/api/step_order.php', {
+        fetch('http://localhost/TEORI_WEB/PHP/api/step_order.php', {
             method: 'POST',
             body: formData
         })
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch and display steps
     function fetchSteps() {
-        fetch('http://localhost:8000/api/step_order.php?action=read')
+        fetch('http://localhost/TEORI_WEB/PHP/api/step_order.php?action=read')
             .then(response => response.json())
             .then(data => {
                 if(data.success){
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('_method', 'DELETE'); // Method Override
             formData.append('id', step_id);
 
-            fetch(`http://localhost:8000/api/step_order.php?id=${step_id}`, {
+            fetch(`http://localhost/TEORI_WEB/PHP/api/step_order.php?id=${step_id}`, {
                 method: 'POST', // Gunakan POST dengan method override
                 body: formData
             })
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Edit step
     window.editStep = function(step_id) {
         // Fetch step data
-        fetch(`http://localhost:8000/api/step_order.php?id=${step_id}`, {
+        fetch(`http://localhost/TEORI_WEB/PHP/api/step_order.php?id=${step_id}`, {
             method: 'GET'
         })
         .then(response => response.json())
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(editStepForm);
         formData.append('_method', 'PUT'); // Method Override
 
-        fetch(`http://localhost:8000/api/step_order.php?id=${step_id}`, {
+        fetch(`http://localhost/TEORI_WEB/PHP/api/step_order.php?id=${step_id}`, {
             method: 'POST', // Gunakan POST dengan method override
             body: formData
         })

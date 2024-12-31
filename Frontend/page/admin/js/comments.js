@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchComments();
 
     function fetchComments() {
-        fetch('http://localhost:8000/api/comments.php')
+        fetch('http://localhost/TEORI_WEB/PHP/api/comments.php')
             .then(response => response.json())
             .then(data => {
                 if(data.success){
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.deleteComment = function(id) {
         if (confirm('Apakah Anda yakin ingin menghapus komentar ini?')) {
-            fetch(`http://localhost:8000/api/comments.php?id=${id}`, {
+            fetch(`http://localhost/TEORI_WEB/PHP/api/comments.php?id=${id}`, {
                 method: 'DELETE'
             })
             .then(response => response.json())

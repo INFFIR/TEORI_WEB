@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchMessages();
 
     function fetchMessages() {
-        fetch('http://localhost:8000/api/messages.php')
+        fetch('http://localhost/TEORI_WEB/PHP/api/messages.php')
             .then(response => response.json())
             .then(data => {
                 if(data.success){
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.deleteMessage = function(id) {
         if (confirm('Apakah Anda yakin ingin menghapus pesan ini?')) {
-            fetch(`http://localhost:8000/api/messages.php?id=${id}`, {
+            fetch(`http://localhost/TEORI_WEB/PHP/api/messages.php?id=${id}`, {
                 method: 'DELETE'
             })
             .then(response => response.json())

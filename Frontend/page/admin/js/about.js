@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Kirim data form ke API untuk membuat entry baru
-        fetch('http://localhost:8000/api/about.php', {
+        fetch('http://localhost/TEORI_WEB/PHP/api/about.php', {
             method: 'POST',
             body: formData
         })
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch dan tampilkan about sections
     function fetchAboutSections() {
-        fetch('http://localhost:8000/api/about.php', {
+        fetch('http://localhost/TEORI_WEB/PHP/api/about.php', {
             method: 'GET'
         })
         .then(response => response.json())
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Delete about section
     window.deleteAbout = function(about_id) {
         if (confirm('Are you sure you want to delete this about section?')) {
-            fetch(`http://localhost:8000/api/about.php?id=${about_id}`, {
+            fetch(`http://localhost/TEORI_WEB/PHP/api/about.php?id=${about_id}`, {
                 method: 'DELETE'
             })
             .then(response => response.json())
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Edit about section
     window.editAbout = function(about_id) {
         // Fetch existing data untuk entry yang dipilih
-        fetch(`http://localhost:8000/api/about.php?id=${about_id}`, {
+        fetch(`http://localhost/TEORI_WEB/PHP/api/about.php?id=${about_id}`, {
             method: 'GET'
         })
         .then(response => response.json())
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Kirim data form ke API untuk mengupdate entry
-        fetch(`http://localhost:8000/api/about.php?id=${about_id}`, {
+        fetch(`http://localhost/TEORI_WEB/PHP/api/about.php?id=${about_id}`, {
             method: 'POST',
             body: formData
         })

@@ -20,7 +20,7 @@ class ServiceOfferedController {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' 
                      || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $host = $_SERVER['HTTP_HOST'];
-        $baseUrl = $protocol . $host . '/'; // Sesuaikan jika project berada di subdirektori
+        $baseUrl = $protocol . $host . '/TEORI_WEB/PHP/'; // Sesuaikan jika project berada di subdirektori
         return $baseUrl;
     }
 

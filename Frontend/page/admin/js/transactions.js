@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchTransactions();
 
     function fetchTransactions() {
-        fetch('http://localhost:8000/api/transaction.php')
+        fetch('http://localhost/TEORI_WEB/PHP/api/transaction.php')
             .then(response => response.json())
             .then(data => {
                 if(data.success){
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.viewDetails = function(id) {
-        fetch(`http://localhost:8000/api/transaction.php?id=${id}`)
+        fetch(`http://localhost/TEORI_WEB/PHP/api/transaction.php?id=${id}`)
             .then(response => response.json())
             .then(data => {
                 if(data.success){

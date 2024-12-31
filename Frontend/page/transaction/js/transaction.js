@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Fungsi untuk memuat kategori layanan dari API
   async function fetchCategories() {
     try {
-      const response = await fetch('http://localhost:8000/api/service_category.php');
+      const response = await fetch('http://localhost/TEORI_WEB/PHP/api/service_category.php');
       const data = await response.json();
 
       console.log('Categories API Response:', data); // Log respons API
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       // Gabungkan semua category_id menjadi satu parameter dengan pemisah koma
       const categoryIdsParam = categoryIds.join(',');
-      const response = await fetch(`http://localhost:8000/api/service_offered.php?category_ids=${categoryIdsParam}`);
+      const response = await fetch(`http://localhost/TEORI_WEB/PHP/api/service_offered.php?category_ids=${categoryIdsParam}`);
       const data = await response.json();
 
       console.log('Service Offered API Response:', data); // Log respons API
@@ -314,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       // 1. Buat transaksi
-      const transactionResponse = await fetch('http://localhost:8000/api/transaction.php', {
+      const transactionResponse = await fetch('http://localhost/TEORI_WEB/PHP/api/transaction.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }));
 
         // Kirim semua detail transaksi
-        const detailPromises = transactionDetails.map(detail => fetch('http://localhost:8000/api/transaction_detail.php', {
+        const detailPromises = transactionDetails.map(detail => fetch('http://localhost/TEORI_WEB/PHP/api/transaction_detail.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

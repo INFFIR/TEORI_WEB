@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('image_url_contact', image_url_contact);
         }
 
-        fetch('http://localhost:8000/api/contact.php', {
+        fetch('http://localhost/TEORI_WEB/PHP/api/contact.php', {
             method: 'POST',
             body: formData
         })
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch and display contact entry
     function fetchContact() {
-        fetch('http://localhost:8000/api/contact.php?action=read')
+        fetch('http://localhost/TEORI_WEB/PHP/api/contact.php?action=read')
             .then(response => response.json())
             .then(data => {
                 if (data.length > 0) {

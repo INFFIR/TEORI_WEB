@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Send data to API to create a new service category
-        fetch('http://localhost:8000/api/service_category.php', {
+        fetch('http://localhost/TEORI_WEB/PHP/api/service_category.php', {
             method: 'POST',
             body: formData
         })
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch and display service categories
     function fetchServiceCategories() {
-        fetch('http://localhost:8000/api/service_category.php', {
+        fetch('http://localhost/TEORI_WEB/PHP/api/service_category.php', {
             method: 'GET'
         })
         .then(response => response.json())
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData();
             formData.append('_method', 'DELETE');
 
-            fetch(`http://localhost:8000/api/service_category.php?id=${category_id}`, {
+            fetch(`http://localhost/TEORI_WEB/PHP/api/service_category.php?id=${category_id}`, {
                 method: 'POST', // Using POST with method override
                 body: formData
             })
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Edit service category
     window.editServiceCategory = function(category_id) {
         // Fetch existing data for the selected category
-        fetch(`http://localhost:8000/api/service_category.php?id=${category_id}`, {
+        fetch(`http://localhost/TEORI_WEB/PHP/api/service_category.php?id=${category_id}`, {
             method: 'GET'
         })
         .then(response => response.json())
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Send data to API to update the service category
-        fetch(`http://localhost:8000/api/service_category.php?id=${category_id}`, {
+        fetch(`http://localhost/TEORI_WEB/PHP/api/service_category.php?id=${category_id}`, {
             method: 'POST', // Using POST with method override (PUT)
             body: formData
         })

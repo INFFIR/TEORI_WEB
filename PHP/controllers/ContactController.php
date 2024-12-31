@@ -146,7 +146,7 @@ class ContactController {
                      || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $host = $_SERVER['HTTP_HOST'];
         // Pastikan base URL tidak termasuk subdirektori 'api'
-        $baseUrl = $protocol . $host . '/';
+        $baseUrl = $protocol . $host . '/TEORI_WEB/PHP/';
         return $baseUrl;
     }
 }
